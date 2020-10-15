@@ -1,6 +1,6 @@
 # Purpose of this repository:
 
-Project template
+Tools I'm learning, building, or using. Feel free to borrow or contribute.
 
 ## Who should someone contact if they have questions?						
 
