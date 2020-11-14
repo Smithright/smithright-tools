@@ -15,7 +15,7 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 ; list installed packages
 :*:,lscp:: conda list --name base
 
-; powershell version
+; powershell & system version
 :*:,psv:: $psversiontable
 
 ; list env variables
@@ -29,11 +29,16 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 ; show aliases powershell commands
 :*:,geta C:: get-alias
 
+; run group policy editor
+:*:,gpe:: C:\Windows\System32\gpedit.msc
+
 ; common directories
-:*:,cd C:: cd C:\
-:*:,cd G:: cd G:\
-:*:,cd run:: cd C:\run
-:*:,cd temp:: cd C:\run\temp
-:*:,cd test:: cd C:\run\test
-:*:,cd ahk:: cd C:\run\ahk
-:*:,cd sys:: G:\My Drive\SysInternals
+:*:,cdcc:: cd C:\
+:*:,cdgg:: cd G:\
+:*:,32:: C:\Windows\System32
+:*:,cdrun:: cd C:\run
+:*:,cdtemp:: cd C:\run\temp
+:*:,cdtest:: cd C:\run\test
+:*:,cdgit:: cd C:\github
+:*:,cdsys:: G:\My Drive\SysInternals
+:*:,.:: start .
