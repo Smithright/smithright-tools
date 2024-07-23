@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scientific Whitepaper with Page Breaks</title>
+    <style>
+        @media print {
+            body {
+                width: 210mm;
+                height: 297mm;
+                margin: 0;
+                padding: 20mm;
+            }
+            .page-break {
+                page-break-after: always;
+            }
+            .page {
+                border: none;
+                margin: 0;
+                padding: 0;
+            }
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .page {
+            border: 1px dashed #ccc;
+            margin-bottom: 20px;
+            padding: 20mm;
+            box-sizing: border-box;
+            height: 297mm;
+            position: relative;
+        }
+        
+        .page::after {
+            content: attr(data-page-number);
+            position: absolute;
+            bottom: 10mm;
+            right: 10mm;
+        }
+        
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+        
+        pre {
+            background-color: #f4f4f4;
+            border: 1px solid #ddd;
+            border-left: 3px solid #f36d33;
+            page-break-inside: avoid;
+            font-family: monospace;
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 1.6em;
+            max-width: 100%;
+            overflow: auto;
+            padding: 1em 1.5em;
+            display: block;
+            word-wrap: break-word;
+        }
+        
+        .page-break {
+            border-top: 2px dashed red;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+        
+        @media screen and (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            .page {
+                padding: 10px;
+                height: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page" data-page-number="1">
+        <header>
+            <h1>Your Whitepaper Title</h1>
+            <p>Author Name</p>
+            <p>Date</p>
+        </header>
+
+        <main>
+            <section>
+                <h2>Introduction</h2>
+                <p>Your introduction text here...</p>
+            </section>
+        </main>
+    </div>
+
+    <div class="page-break"></div>
+
+    <div class="page" data-page-number="2">
+        <section>
+            <h2>Section with Visual Aid</h2>
+            <img src="/api/placeholder/600/400" alt="Example visual aid">
+            <p>Description of the visual aid...</p>
+        </section>
+    </div>
+
+    <div class="page-break"></div>
+
+    <div class="page" data-page-number="3">
+        <section>
+            <h2>Code Sample</h2>
+            <pre><code>
+function exampleFunction() {
+    console.log("This is a code sample");
+}
+            </code></pre>
+            <p>Explanation of the code sample...</p>
+        </section>
+
+        <footer>
+            <p>&copy; 2024 Your Name/Organization. All rights reserved.</p>
+        </footer>
+    </div>
+</body>
+</html>
