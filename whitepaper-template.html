@@ -3,10 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HTML Whitepaper Template - Pretty Printable</title>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        // Define variables:
+        var title = 'HTML Whitepaper Template - Pretty Printable';
+        var company_name = 'Your Company';
+        var contact_email = 'info@company.com';
+
+        // Set current date and year dynamically
+        document.getElementById('current-date').textContent = new Date().toLocaleDateString();
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        // Get the dynamically set date and year
+        var current_date = document.getElementById('current-date').textContent;
+        var current_year = document.getElementById('current-year').textContent;
+
+        // Define print header and footer
+        var print_header = company_name + ' | ' + title;
+        var print_footer =  'Confidential | Printed: ' + current_date + ' | © ' + current_year + ' | ' + contact_email;
+        var print_page = 'Page ' + 'counter(page)' + ' of ' + 'counter(pages)';
+
+        // Set CSS --print-header from JS variables above
+        document.documentElement.style.setProperty('--print-header', '"' + print_header + '"');
+
+        // Set CSS --print-footer from JS variables above
+        document.documentElement.style.setProperty('--print-footer', '"' + print_footer + '"');
+
+        // Set the document title dynamically
+        document.title = title;
+      });
+    </script>
+
     <style>
+        /* CSS Variables for easy theme customization */
         :root {
-            /* Define CSS variables for easy theme management */
             --content-width: 210mm;
             --content-padding: 40px;
             --background-color: #121212;
@@ -18,10 +49,11 @@
             --button-color: #3700b3;
             --button-text-color: #ffffff;
             --button-hover-color: hsl(258, 98%, 23%);
+            --print-header-color: rgb(235, 236, 243);
         }
 
+        /* Base styles for the body */
         body {
-            /* Base styles for the body */
             font-family: Arial, sans-serif;
             line-height: 1.6;
             color: var(--text-color);
@@ -30,24 +62,24 @@
             padding: 0;
         }
 
+        /* Styles for the main content wrapper */
         .content-wrapper {
-            /* Styles for the main content wrapper */
             max-width: var(--content-width);
             margin: 0 auto;
             padding: 20px;
             position: relative;
         }
 
+        /* Styles for the content section */
         .content {
-            /* Styles for the content section */
             background-color: var(--paper-color);
             padding: var(--content-padding);
             box-shadow: 0 0 20px rgba(255,255,255,0.1);
             margin-bottom: 60px;
         }
 
+        /* Styles for the print button */
         .print-button {
-            /* Styles for the print button */
             position: fixed;
             top: 20px;
             right: 20px;
@@ -62,13 +94,13 @@
             z-index: 1000;
         }
 
+        /* Hover state for the print button */
         .print-button:hover {
-            /* Hover state for the print button */
             background-color: var(--button-hover-color);
         }
 
+        /* Styles for the footer */
         .floating-footer {
-            /* Styles for the footer */
             position: fixed;
             bottom: 0;
             left: 0;
@@ -82,26 +114,26 @@
             border-top: 1px solid var(--accent-color);
         }
 
+        /* Styles for headings */
         h1, h2 {
-            /* Styles for headings */
             color: var(--accent-color);
         }
 
+        /* Styles for images */
         img {
-            /* Styles for images */
             max-width: 100%;
             height: auto;
             margin-bottom: 1em;
         }
 
+        /* Styles for code blocks */
         .code-block {
-            /* Styles for code blocks */
             position: relative;
             margin-bottom: 1em;
         }
 
+        /* Styles for preformatted text */
         pre {
-            /* Styles for preformatted text */
             background-color: #f4f4f4;
             border: 1px solid #ddd;
             border-left: 3px solid var(--secondary-color);
@@ -115,8 +147,8 @@
             color: var(--text-color);
         }
 
+        /* Styles for the copy button within code blocks */
         .copy-button {
-            /* Styles for the copy button within code blocks */
             position: absolute;
             top: 5px;
             right: 5px;
@@ -131,13 +163,13 @@
             transition: opacity 0.3s ease;
         }
 
+        /* Hover state for the copy button */
         .copy-button:hover {
-            /* Hover state for the copy button */
             opacity: 1;
         }
 
+        /* Media query for larger screens */
         @media screen and (min-width: calc(210mm + 160px)) {
-            /* Media query for larger screens */
             .print-button {
                 position: absolute;
                 top: 20px;
@@ -145,49 +177,173 @@
             }
         }
 
+        @page {
+            size: auto;
+            margin: 1cm;
+        }
+
+        /* Print-specific styles */
         @media print {
-            /* Print-specific styles */
+
+            .page {
+                page-break-after: always;
+                position: relative;
+                }
+
+                .page::before {
+                    content: var(--print-header);
+                    position: fixed;
+                    top: 0cm; /* Slightly lower to ensure it's within the printable area */
+                    left: 1cm; /* Aligns with the document's left margin */
+                    right: 1cm; /* Aligns with the document's right margin */
+                    font-size: 8pt;
+                    color: var(--print-header-color);
+                    font-family: 'Arial', sans-serif; /* Professional and widely available font */
+                    font-weight: normal;
+                    text-align: right; /* Right-align to match the original intent */
+                    padding-top: 0cm; /* Adds spacing for better readability */
+                    /*border-bottom: 1px solid #ccc; /* Adds a subtle border for separation */
+                }
+
+                .page::after {
+                    content: var(--print-footer);
+                    position: fixed;
+                    bottom: 0cm;
+                    left: 1cm; /* Aligns with the document's left margin */
+                    right: 1cm; /* Aligns with the document's right margin */
+                    font-size: 8pt; /* Slightly smaller for footer but still readable */
+                    color: var(--print-header-color);
+                    font-family: 'Arial', sans-serif; /* Professional and widely available font */
+                    font-weight: normal;
+                    text-align: center; /* Center-align for balanced appearance */
+                    /*padding-bottom: 0.5cm; /* Adds spacing for better readability */
+                    border-top: 1px solid #ccc; /* Adds a subtle border for separation */
+                }
+
+            /* Basic print styles */
             body {
                 background-color: white;
+                color: #333333;
+                font-family: 'Arial', sans-serif;
+                line-height: 1.5;
+                counter-reset: page 1;
             }
+
+            .content-wrapper {
+                margin-top: 15mm;  /* Space for our custom header */
+                margin-bottom: 15mm;  /* Space for our custom footer */
+            }
+
             .content {
+                padding: 0;
                 box-shadow: none;
-                margin-bottom: 0;
+                margin: 0;
             }
-            .no-print {
+
+            /* Hide elements not needed in print */
+            .no-print, .print-button, .copy-button, .floating-footer {
                 display: none !important;
             }
-            @page {
-                margin: 20mm;
+
+            /* Styles for print header and footer */
+            .print-header,
+            .print-footer {
+                font-size: 8pt;
+                color: #666666;
+                font-weight: normal;
             }
+ 
+            .print-header {
+                /*position: running(header);*/
+                text-align: right;
+            }
+
+            .print-footer {
+                /*position: running(footer);*/
+                text-align: center;
+            }
+
+            /* Prevent orphans and widows */
+            p {
+                orphans: 3;
+                widows: 3;
+            }
+
+            /* Force page breaks before major sections */
+            h1, h2 {
+                page-break-before: always;
+                page-break-after: avoid;
+            }
+
+            /* Ensure first heading doesn't create an empty page */
+            .content > h1:first-of-type,
+            .content > h2:first-of-type {
+                page-break-before: avoid;
+            }
+
+            /* Keep images with their captions */
+            figure {
+                page-break-inside: avoid;
+            }
+
+            /* Ensure code blocks don't break across pages */
+            pre {
+                page-break-inside: avoid;
+            }
+
+            /* Styles for headings in print */
+            h1 {
+                font-size: 18pt;
+                color: #333333;
+            }
+
+            h2 {
+                font-size: 14pt;
+                color: #666666;
+            }
+        }
+
+        /* Hide print-only elements */
+        .print-only {
+            display: none;
         }
     </style>
 </head>
 <body>
+    <!-- Header for printed version -->
+
+
     <div class="content-wrapper">
+        <!-- Print button, visible only on screen -->
         <button class="print-button no-print" onclick="window.print()">🖨️ PDF</button>
 
         <div class="content">
-            <h1>Your Whitepaper Title</h1>
-            <p>Author Name</p>
-            <p>Date: <span id="current-date"></span></p>
+            <!-- Cover page -->
+            <section class="page">
+                <h1>Your Whitepaper Title</h1>
+                <p>Author Name</p>
+                <p>Date: <span id="current-date"></span></p>
+            </section>
 
-            <!-- Introduction Section -->
-            <section>
+            <!-- Introduction section -->
+            <section class="page">
                 <h2>Introduction</h2>
                 <p>Start your whitepaper with an introduction. Explain the purpose of your document and provide an overview of what readers can expect.</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
             </section>
 
-            <!-- Image Embedding Section -->
-            <section>
+            <!-- Image embedding section -->
+            <section class="page">
                 <h2>Embed Images</h2>
                 <p>You can add as many sections as needed to cover your topic thoroughly.</p>
-                <img src="/api/placeholder/600/400" alt="Descriptive alt text for your image">
-                <p>Add a caption or description for your image here.</p>
+                <figure>
+                    <img src="https://via.placeholder.com/600x400" alt="Descriptive alt text for your image">
+                    <figcaption>Add a caption or description for your image here.</figcaption>
+                </figure>
             </section>
 
-            <!-- Code Sample Embedding Section -->
-            <section>
+            <!-- Code sample section -->
+            <section class="page">
                 <h2>Embed Code Samples</h2>
                 <div class="code-block">
                     <pre><code>function exampleCode() {
@@ -199,20 +355,15 @@
                 <p>Explain your code or technical details here.</p>
             </section>
 
-            <!-- Additional sections can be added here -->
-
         </div>
 
-        <footer class="floating-footer no-print">
+        <!-- Footer visible only on screen -->
+        <footer class="floating-footer">
             <p>&copy; <span id="current-year"></span> Your Organization. All rights reserved.</p>
         </footer>
     </div>
 
     <script>
-        // Set current date and year dynamically
-        document.getElementById('current-date').textContent = new Date().toLocaleDateString();
-        document.getElementById('current-year').textContent = new Date().getFullYear();
-
         // Function to copy code to clipboard
         function copyCode(button) {
             const pre = button.previousElementSibling;
