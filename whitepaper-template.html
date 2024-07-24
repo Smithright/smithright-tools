@@ -3,134 +3,163 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scientific Whitepaper with Page Breaks</title>
+    <title>HTML Whitepaper Template - Pretty Printable</title>
     <style>
-        @media print {
-            body {
-                width: 210mm;
-                height: 297mm;
-                margin: 0;
-                padding: 20mm;
-            }
-            .page-break {
-                page-break-after: always;
-            }
-            .page {
-                border: none;
-                margin: 0;
-                padding: 0;
+        /* Page setup for printing */
+        @page {
+            size: A4;
+            margin: 20mm;
+            @bottom-right {
+                content: counter(page);
             }
         }
         
+        /* Basic body styles */
         body {
             font-family: 'Arial', sans-serif;
             line-height: 1.6;
             color: #333;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
+            margin: 0;
+            padding: 0;
+            counter-reset: page 1;
         }
         
-        .page {
-            border: 1px dashed #ccc;
-            margin-bottom: 20px;
-            padding: 20mm;
-            box-sizing: border-box;
-            height: 297mm;
-            position: relative;
+        /* Section styles */
+        .section {
+            margin-bottom: 2em;
         }
         
-        .page::after {
-            content: attr(data-page-number);
-            position: absolute;
-            bottom: 10mm;
-            right: 10mm;
-        }
-        
+        /* Heading styles */
         h1, h2, h3 {
             color: #2c3e50;
+            break-after: avoid;
         }
         
+        /* Paragraph styles */
+        p {
+            margin-bottom: 1em;
+            text-align: justify;
+        }
+        
+        /* Image styles */
         img {
             max-width: 100%;
             height: auto;
+            margin-bottom: 1em;
         }
         
+        /* Code block styles */
         pre {
             background-color: #f4f4f4;
             border: 1px solid #ddd;
             border-left: 3px solid #f36d33;
             page-break-inside: avoid;
             font-family: monospace;
-            font-size: 15px;
-            line-height: 1.6;
-            margin-bottom: 1.6em;
+            font-size: 14px;
+            line-height: 1.4;
+            margin-bottom: 1em;
             max-width: 100%;
             overflow: auto;
-            padding: 1em 1.5em;
-            display: block;
+            padding: 0.5em 1em;
+            white-space: pre-wrap;
             word-wrap: break-word;
         }
         
+        /* Hard page break style */
         .page-break {
-            border-top: 2px dashed red;
-            margin-top: 10px;
-            margin-bottom: 10px;
+            page-break-after: always;
+            height: 0;
+            margin: 0;
+            border: none;
         }
         
-        @media screen and (max-width: 600px) {
+        /* Styles for screen viewing */
+        @media screen {
             body {
-                padding: 10px;
+                max-width: 210mm;
+                margin: 0 auto;
+                background-color: #f0f0f0;
+                padding: 20px;
             }
-            .page {
-                padding: 10px;
-                height: auto;
+            .content {
+                background-color: white;
+                box-shadow: 0 0 10px rgba(0,0,0,0.1);
+                padding: 40px;
+            }
+            .page-break {
+                border-top: 2px dashed #999;
+                margin: 20px 0;
             }
         }
     </style>
 </head>
 <body>
-    <div class="page" data-page-number="1">
-        <header>
+<!-- 
+How to use this template:
+1. Replace all placeholder text with your own content.
+2. To insert a page break, use: <hr class="page-break">
+3. Images: Replace 'src="/api/placeholder/600/400"' with the path to your image.
+4. Update the footer with your name/organization.
+5. The current date and year are automatically inserted.
+6. Add, remove, or modify sections as needed.
+7. For code snippets, use the <pre><code> structure as shown.
+8. Save as .html and open in a web browser to view or print.
+-->
+    <div class="content">
+        <!-- Title Page -->
+        <div class="section">
             <h1>Your Whitepaper Title</h1>
             <p>Author Name</p>
-            <p>Date</p>
-        </header>
+            <p>Date: <span id="current-date"></span></p>
+        </div>
 
-        <main>
-            <section>
-                <h2>Introduction</h2>
-                <p>Your introduction text here...</p>
-            </section>
-        </main>
-    </div>
+        <!-- To insert a page break, use: <hr class="page-break"> -->
+        <hr class="page-break">
 
-    <div class="page-break"></div>
+        <!-- Introduction Section -->
+        <div class="section">
+            <h2>1. Introduction</h2>
+            <p>Start your whitepaper with an introduction. Explain the purpose of your document and provide an overview of what readers can expect.</p>
+            <p>You can add multiple paragraphs to elaborate on your topic.</p>
+        </div>
 
-    <div class="page" data-page-number="2">
-        <section>
-            <h2>Section with Visual Aid</h2>
-            <img src="/api/placeholder/600/400" alt="Example visual aid">
-            <p>Description of the visual aid...</p>
-        </section>
-    </div>
+        <!-- Main Content Sections -->
+        <div class="section">
+            <h2>2. Key Concepts</h2>
+            <p>Use this section to explain the main ideas or concepts of your whitepaper. You can add as many sections as needed to cover your topic thoroughly.</p>
+            
+            <!-- Example of how to include an image -->
+            <img src="/api/placeholder/600/400" alt="Descriptive alt text for your image">
+            <p>Add a caption or description for your image here.</p>
+        </div>
 
-    <div class="page-break"></div>
+        <div class="section">
+            <h2>3. Technical Details</h2>
+            <p>If your whitepaper includes technical information, you can use this section to provide details, data, or examples.</p>
+            
+            <!-- Example of how to include a code snippet -->
+            <pre><code>function exampleCode() {
+    console.log("This is where you can put code examples");
+    return "Use this for technical demonstrations";
+}</code></pre>
+            <p>Explain your code or technical details here.</p>
+        </div>
 
-    <div class="page" data-page-number="3">
-        <section>
-            <h2>Code Sample</h2>
-            <pre><code>
-function exampleFunction() {
-    console.log("This is a code sample");
-}
-            </code></pre>
-            <p>Explanation of the code sample...</p>
-        </section>
+        <div class="section">
+            <h2>4. Conclusion</h2>
+            <p>Summarize the key points of your whitepaper. Restate the main ideas and provide any final thoughts or calls to action for your readers.</p>
+        </div>
 
+        <!-- Footer -->
         <footer>
-            <p>&copy; 2024 Your Name/Organization. All rights reserved.</p>
+            <p>&copy; <span id="current-year"></span> [Your Name or Organization]. All rights reserved.</p>
         </footer>
     </div>
+
+    <script>
+        // Dynamically insert current date and year
+        document.getElementById('current-date').textContent = new Date().toLocaleDateString();
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+    </script>
 </body>
 </html>
