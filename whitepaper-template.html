@@ -7,22 +7,32 @@
     <script>
       document.addEventListener("DOMContentLoaded", function() {
         // Define variables:
-        var title = 'HTML Whitepaper Template - Pretty Printable';
-        var company_name = 'Your Company';
-        var contact_email = 'info@company.com';
+        const title = 'HTML Whitepaper Template - Pretty Printable';
+        const author_name = 'Author Name';
+        const company_name = 'Your Company';
+        const contact_email = 'info@company.com';
 
         // Set current date and year dynamically
         document.getElementById('current-date').textContent = new Date().toLocaleDateString();
         document.getElementById('current-year').textContent = new Date().getFullYear();
 
         // Get the dynamically set date and year
-        var current_date = document.getElementById('current-date').textContent;
-        var current_year = document.getElementById('current-year').textContent;
+        let current_date = document.getElementById('current-date').textContent;
+        let current_year = document.getElementById('current-year').textContent;
+
+        // Get the last modified date of the HTML file
+        let lastModified = new Date(document.lastModified);
+        let lastModifiedDate = lastModified.toLocaleDateString();
+
+        // Set the last updated date dynamically
+        document.querySelectorAll('.date-modified').forEach(element => {
+        element.textContent = lastModifiedDate;
+        });
 
         // Define print header and footer
-        var print_header = company_name + ' | ' + title;
-        var print_footer =  'Confidential | Printed: ' + current_date + ' | © ' + current_year + ' | ' + contact_email;
-        var print_page = 'Page ' + 'counter(page)' + ' of ' + 'counter(pages)';
+        let print_header = company_name + ' | ' + title;
+        let print_footer =  'Confidential | Printed: ' + current_date + ' | © ' + current_year + ' | ' + contact_email;
+        //var print_page = 'Page ' + 'counter(page)' + ' of ' + 'counter(pages)';
 
         // Set CSS --print-header from JS variables above
         document.documentElement.style.setProperty('--print-header', '"' + print_header + '"');
@@ -32,6 +42,15 @@
 
         // Set the document title dynamically
         document.title = title;
+        document.querySelectorAll('.title').forEach(element => {
+        element.textContent = title;
+        });
+
+        // Set author dynamically
+        document.querySelectorAll('.author').forEach(element => {
+        element.textContent = author_name;
+        });
+
       });
     </script>
 
@@ -39,10 +58,12 @@
         /* CSS Variables for easy theme customization */
         :root {
             --content-width: 210mm;
+            --sidebar-width: 250px;
             --content-padding: 40px;
             --background-color: #121212;
             --paper-color: #ffffff;
             --text-color: #1c0e5b;
+            --menu-text-color: #ffffff;
             --dark-text-color: #e0e0e0;
             --accent-color: hsl(259, 69%, 17%);
             --secondary-color: #03dac6;
@@ -50,53 +71,157 @@
             --button-text-color: #ffffff;
             --button-hover-color: hsl(258, 98%, 23%);
             --print-header-color: rgb(235, 236, 243);
+            --font-family: 'Helvetica Neue', Arial, sans-serif;
         }
 
         /* Base styles for the body */
         body {
-            font-family: Arial, sans-serif;
+            font-family: var(--font-family);
             line-height: 1.6;
             color: var(--text-color);
             background-color: var(--background-color);
+        }
+
+        .layout-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .left-sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--background-color);
+            color: var(--menu-text-color);
+            padding: 40px 0;
+            overflow-y: auto;
+            position: fixed;
+            left: calc(-1 * var(--sidebar-width));
+            top: 0;
+            bottom: 0;
+            transition: left 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+            font-size: 14px;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .left-sidebar:hover,
+        .sidebar-trigger:hover + .left-sidebar {
+            left: 0;
+            box-shadow: 2px 0 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .sidebar-trigger {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 10px;
+            z-index: 999;
+            background-color: var(--secondary-color);
+            opacity: 0.5;
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar-trigger:hover {
+            opacity: 1;
+        }
+
+        .sidebar-header {
+            padding: 0 30px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .sidebar-header h2 {
+            color: var(--secondary-color);
+            font-size: 18px;
             margin: 0;
+        }
+
+        .sidebar-menu {
+            list-style-type: none;
             padding: 0;
+            margin: 0;
+        }
+
+        .sidebar-menu li {
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar-menu a {
+            display: block;
+            padding: 10px 30px;
+            color: var(--menu-text-color);
+            transition: background-color 0.3s ease, color 0.3s ease;
+            border-left: 3px solid transparent;
+            text-decoration: underline;
+        }
+
+        .sidebar-menu a:hover,
+        .sidebar-menu a.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--secondary-color);
+            border-left-color: var(--secondary-color);
+        }
+
+        .sidebar-footer {
+            padding: 20px 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 20px;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
         }
 
         /* Styles for the main content wrapper */
         .content-wrapper {
+            flex-grow: 1;
             max-width: var(--content-width);
+            background-color: var(--paper-color);
+            padding: 40px;
             margin: 0 auto;
+            box-shadow: 0 0 20px rgba(255,255,255,0.1);
+            overflow-y: auto;
+        }
+
+        .right-sidebar {
+            width: var(--sidebar-width);
             padding: 20px;
-            position: relative;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
         }
 
         /* Styles for the content section */
         .content {
             background-color: var(--paper-color);
             padding: var(--content-padding);
-            box-shadow: 0 0 20px rgba(255,255,255,0.1);
-            margin-bottom: 60px;
+            margin-bottom: 60px; 
         }
 
         /* Styles for the print button */
         .print-button {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background-color: var(--button-color);
-            color: var(--button-text-color);
-            border: none;
-            padding: 10px 15px;
-            font-size: 16px;
+            background-color: transparent;
+            color: var(--secondary-color);
+            border: 1px solid var(--secondary-color);
+            padding: 8px 15px;
+            font-size: 14px;
             cursor: pointer;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-            z-index: 1000;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         /* Hover state for the print button */
         .print-button:hover {
-            background-color: var(--button-hover-color);
+            background-color: var(--secondary-color);
+            color: var(--background-color);
+        }
+
+        .print-icon {
+            font-size: 18px;
         }
 
         /* Styles for the footer */
@@ -107,12 +232,30 @@
             right: 0;
             background-color: var(--background-color);
             color: var(--dark-text-color);
-            text-align: center;
-            padding: 10px;
+            padding: 15px 40px;
             font-size: 14px;
             z-index: 1000;
-            border-top: 1px solid var(--accent-color);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
+
+        .footer-content {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .footer-text {
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+
+        .footer-text:hover {
+            opacity: 1;
+        }
+
 
         /* Styles for headings */
         h1, h2 {
@@ -168,12 +311,23 @@
             opacity: 1;
         }
 
-        /* Media query for larger screens */
-        @media screen and (min-width: calc(210mm + 160px)) {
-            .print-button {
-                position: absolute;
-                top: 20px;
-                right: -80px;
+        @media (max-width: 1200px) {
+            .layout-container {
+                flex-direction: column;
+            }
+            .left-sidebar, .right-sidebar {
+                width: 100%;
+                height: auto;
+            }
+            .left-sidebar {
+                position: static;
+                box-shadow: none;
+            }
+            .sidebar-trigger {
+                display: none;
+            }
+            .right-sidebar {
+                position: static;
             }
         }
 
@@ -182,12 +336,24 @@
             margin: 1cm;
         }
 
+        /* Add spacing and horizontal rule between sections, visible only on screen */
+        .page {
+            padding-top: 20px; /* Add top padding for spacing */
+            padding-bottom: 20px; /* Add bottom padding for spacing */
+            border-bottom: 1px solid #e0e0e0; /* Add a subtle horizontal rule */
+        }
+
+        .page:last-of-type {
+            border-bottom: none; /* Remove the border from the last section */
+        }
+
         /* Print-specific styles */
         @media print {
 
             .page {
                 page-break-after: always;
                 position: relative;
+                border-bottom: none;
                 }
 
                 .page::before {
@@ -198,11 +364,11 @@
                     right: 1cm; /* Aligns with the document's right margin */
                     font-size: 8pt;
                     color: var(--print-header-color);
-                    font-family: 'Arial', sans-serif; /* Professional and widely available font */
+                    font-family: var(--font-family);
                     font-weight: normal;
                     text-align: right; /* Right-align to match the original intent */
                     padding-top: 0cm; /* Adds spacing for better readability */
-                    /*border-bottom: 1px solid #ccc; /* Adds a subtle border for separation */
+                    z-index: 1000; /* Ensure header is on top */
                 }
 
                 .page::after {
@@ -213,7 +379,7 @@
                     right: 1cm; /* Aligns with the document's right margin */
                     font-size: 8pt; /* Slightly smaller for footer but still readable */
                     color: var(--print-header-color);
-                    font-family: 'Arial', sans-serif; /* Professional and widely available font */
+                    font-family: var(--font-family);
                     font-weight: normal;
                     text-align: center; /* Center-align for balanced appearance */
                     /*padding-bottom: 0.5cm; /* Adds spacing for better readability */
@@ -224,7 +390,7 @@
             body {
                 background-color: white;
                 color: #333333;
-                font-family: 'Arial', sans-serif;
+                font-family: var(--font-family);
                 line-height: 1.5;
                 counter-reset: page 1;
             }
@@ -241,7 +407,7 @@
             }
 
             /* Hide elements not needed in print */
-            .no-print, .print-button, .copy-button, .floating-footer {
+            .no-print {
                 display: none !important;
             }
 
@@ -310,30 +476,44 @@
     </style>
 </head>
 <body>
-    <!-- Header for printed version -->
+    <div class="layout-container">
+        <div class="sidebar-trigger"></div>
+        <aside class="left-sidebar">
+            <div class="sidebar-header">
+                <h2>Document Outline</h2>
+            </div>
+            <nav>
+                <ul class="sidebar-menu">
+                    <li><a href="#introduction" class="active">Introduction</a></li>
+                    <li><a href="#section1">Embed Images</a></li>
+                    <li><a href="#section2">Embed Code Samples</a></li>
+                    <!-- Add more menu items as needed -->
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <p class="title"></p>
+                <p>Last updated: <span class="date-modified"></span></p>
+            </div>
+        </aside>
 
-
-    <div class="content-wrapper">
-        <!-- Print button, visible only on screen -->
-        <button class="print-button no-print" onclick="window.print()">🖨️ PDF</button>
-
-        <div class="content">
-            <!-- Cover page -->
+        <main class="content-wrapper">
+            <div class="content">
+                <!-- Cover page -->
             <section class="page">
-                <h1>Your Whitepaper Title</h1>
-                <p>Author Name</p>
+                <h1 class="title"></h1>
+                <p class="author"></p>
                 <p>Date: <span id="current-date"></span></p>
             </section>
 
             <!-- Introduction section -->
-            <section class="page">
+            <section class="page" id="introduction">
                 <h2>Introduction</h2>
                 <p>Start your whitepaper with an introduction. Explain the purpose of your document and provide an overview of what readers can expect.</p>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
             </section>
 
             <!-- Image embedding section -->
-            <section class="page">
+            <section class="page" id="section1">
                 <h2>Embed Images</h2>
                 <p>You can add as many sections as needed to cover your topic thoroughly.</p>
                 <figure>
@@ -343,23 +523,30 @@
             </section>
 
             <!-- Code sample section -->
-            <section class="page">
+            <section class="page"id="section2">
                 <h2>Embed Code Samples</h2>
                 <div class="code-block">
                     <pre><code>function exampleCode() {
     console.log("This is where you can put code examples");
     return "Use this for technical demonstrations";
 }</code></pre>
-                    <button class="copy-button" onclick="copyCode(this)">📋</button>
+                    <button class="copy-button no-print" onclick="copyCode(this)">📋</button>
                 </div>
                 <p>Explain your code or technical details here.</p>
             </section>
 
-        </div>
+        </main>
 
         <!-- Footer visible only on screen -->
-        <footer class="floating-footer">
-            <p>&copy; <span id="current-year"></span> Your Organization. All rights reserved.</p>
+        <footer class="floating-footer no-print">
+            <div class="footer-content">
+                <span class="footer-text">&copy; <span id="current-year"></span> Your Organization</span>
+                <span class="footer-text">All rights reserved</span>
+            </div>
+            <button class="print-button no-print" onclick="window.print()">
+                <span class="print-icon">🖨️</span>
+                <span>Generate PDF</span>
+            </button>
         </footer>
     </div>
 
@@ -377,6 +564,30 @@
                 console.error('Failed to copy: ', err); // Log any errors
             });
         }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuItems = document.querySelectorAll('.sidebar-menu a');
+            
+            function setActiveMenuItem() {
+                const fromTop = window.scrollY;
+                
+                menuItems.forEach(link => {
+                    const section = document.querySelector(link.hash);
+                    
+                    if (
+                        section.offsetTop <= fromTop &&
+                        section.offsetTop + section.offsetHeight > fromTop
+                    ) {
+                        link.classList.add('active');
+                    } else {
+                        link.classList.remove('active');
+                    }
+                });
+            }
+
+            window.addEventListener('scroll', setActiveMenuItem);
+            setActiveMenuItem();
+        });
     </script>
 </body>
 </html>
