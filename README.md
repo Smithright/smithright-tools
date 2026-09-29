@@ -4,7 +4,7 @@ Tools I'm learning, building, or using. Feel free to borrow or contribute.
 
 ## Presentation template
 
-[Fold](presentation-template/) is a portable HTML presentation with seven original design examples, a browser editor, drag-to-reorder slides, optional detail below the fold, fullscreen, and PDF printing. Open `presentation-template/index.html` locally; see its README for authoring and GitHub Pages hosting.
+[Fold](https://github.com/Smithright/fold) now has its own public template repository. It provides portable HTML presentations, seven original design examples, a browser editor, drag-to-reorder slides, optional detail below the fold, fullscreen, and PDF printing. [Try the live demo](https://smithright.github.io/fold/).
 
 ## Who should someone contact if they have questions?						
 
