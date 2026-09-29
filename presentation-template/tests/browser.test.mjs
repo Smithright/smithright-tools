@@ -33,7 +33,7 @@ try {
   await page.keyboard.press('Home');await page.locator('#next').click();assert.equal(await page.locator('#deck>.slide:not([hidden])').getAttribute('id'),'precision');
   await page.locator('#overview-open').click();await page.locator('[data-overview="evidence"]').click();assert.equal(await page.locator('#deck>.slide:not([hidden])').getAttribute('id'),'evidence');
   await page.locator('#read-mode').click();assert.equal(await page.locator('#deck>.slide:not([hidden])').count(),7);await page.locator('#read-mode').click();
-  await page.locator('#fullscreen').click();assert.equal(await page.evaluate(()=>!!document.fullscreenElement),true);await page.locator('#fullscreen').click();
+  await page.locator('#fullscreen').click();await page.waitForFunction(()=>!!document.fullscreenElement);await page.locator('#fullscreen').click();await page.waitForFunction(()=>!document.fullscreenElement);
   await page.locator('#motion').click();assert.equal(await page.locator('body').evaluate(el=>el.classList.contains('paused')),true);
   checks.push('Navigation, overview, reading mode, fullscreen enter/exit, and pause motion');
   await page.keyboard.press('Home');await page.locator('#edit-mode').click();
