@@ -1,5 +1,9 @@
 {
-  "sourceCommit": "1183a2d",
-  "source": "https://github.com/Smithright/smithright-tools/tree/codex/presentation-template/presentation-template",
-  "sha256": "5ff4e322493070bb2ba9ce39cefc16258a7f3349f9a122cacef755cdd0c690ae"
+  "kind": "redirect",
+  "destination": "https://smithright.github.io/fold/",
+  "sourceRepository": "https://github.com/Smithright/fold",
+  "preserves": [
+    "query",
+    "fragment"
+  ]
 }
