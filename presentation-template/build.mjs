@@ -1,0 +1,12 @@
+import {readFile, writeFile} from 'node:fs/promises';
+import {fileURLToPath} from 'node:url';
+import './src/model.js';
+const root = new URL('./', import.meta.url);
+const read = path => readFile(new URL(path, root), 'utf8');
+const [shell, css, model, renderers, app, source] = await Promise.all(['src/shell.html','src/styles.css','src/model.js','src/renderers.js','src/app.js',process.argv[2] || 'deck.json'].map(read));
+const deck = FoldModel.validate(JSON.parse(source));
+const safeJSON = JSON.stringify(deck, null, 2).replace(/</g, '\\u003c').replace(/\u2028/g, '\\u2028').replace(/\u2029/g, '\\u2029');
+const html = shell.replace('/* FOLD_STYLES */', css).replace('/* FOLD_MODEL */', model).replace('/* FOLD_RENDERERS */', renderers).replace('/* FOLD_APP */', app).replace('FOLD_DECK_JSON', safeJSON);
+const destination = new URL(process.argv[3] || 'index.html', root);
+await writeFile(destination, html);
+console.log(`Built ${deck.slides.length} slides → ${fileURLToPath(destination)} (${Buffer.byteLength(html)} bytes)`);

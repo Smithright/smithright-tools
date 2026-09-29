@@ -1,0 +1,14 @@
+{
+  "name": "smithright-fold",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Portable slides with editable source and optional depth below the fold.",
+  "scripts": {
+    "build": "node build.mjs",
+    "test": "node tests/model.test.mjs && node tests/browser.test.mjs"
+  },
+  "devDependencies": {
+    "playwright": "1.62.1",
+    "pdf-lib": "1.17.1"
+  }
+}

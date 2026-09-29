@@ -1,0 +1,79 @@
+<!doctype html>
+<!--
+Fold — Copyright (c) 2026 Smithright. MIT License.
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Fold: a portable, editable presentation with room for the details. A Smithright Tools open template.">
+  <meta name="color-scheme" content="light dark">
+  <title>Fold — an open presentation template</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23151918'/%3E%3Cpath d='M8 7h17v6H14v4h8v5h-8v5H8z' fill='%23dbf2ac'/%3E%3C/svg%3E">
+  <style>/* FOLD_STYLES */</style>
+</head>
+<body>
+  <a class="skip" href="#deck">Skip to presentation</a>
+  <header class="app-header">
+    <a class="wordmark" href="#" aria-label="Fold, first slide">F<span>O</span>LD<span class="wordmark-dot">↗</span></a>
+    <span class="app-description">A little structure. Endless possibility.</span>
+    <nav aria-label="View controls">
+      <button id="read-mode" aria-pressed="false">Read</button>
+      <button id="edit-mode" aria-pressed="false">Edit</button>
+      <button id="print-open" title="Print or save as PDF">Print / PDF</button>
+      <button id="fullscreen" class="primary" title="Fullscreen (F)">Present <span aria-hidden="true">↗</span></button>
+    </nav>
+  </header>
+  <aside id="draft-banner" class="draft-banner" hidden><span>A saved draft is available in this browser.</span><button id="restore-draft">Restore draft</button><button id="dismiss-draft">Use file version</button></aside>
+  <aside id="editor" aria-label="Deck editor" hidden>
+    <div class="editor-head"><div><p class="micro">YOUR WORKSPACE</p><h2>Make it yours.</h2></div><button id="close-editor" aria-label="Close editor">×</button></div>
+    <p id="save-status" class="save-status" role="status">Edits are local. Download to keep or share.</p>
+    <div class="editor-actions"><button id="undo" disabled>Undo</button><button id="redo" disabled>Redo</button><button id="add-slide">Duplicate slide</button></div>
+    <div class="list-label"><span>SLIDES</span><span>Drag or use ↑ ↓ to reorder</span></div>
+    <ol id="slide-list" aria-label="Slide order"></ol>
+    <form id="slide-form">
+      <div class="field-heading"><h3>Slide content</h3><code id="slide-id"></code></div>
+      <label>Design<select name="layout" id="layout"></select></label>
+      <label>Eyebrow<input name="eyebrow" maxlength="100"></label>
+      <label>Headline<textarea name="title" maxlength="140" rows="3"></textarea></label>
+      <label>Supporting text<textarea name="body" maxlength="300" rows="3"></textarea></label>
+      <label>Accent color<input name="accent" type="color"></label>
+      <label>Footnote<input name="label" maxlength="150"></label>
+      <details><summary>Diagram labels / chart values</summary><div id="item-fields"></div></details>
+      <details><summary>Below-the-fold details</summary><div id="detail-fields"></div><button id="add-detail" type="button">Add detail section</button></details>
+      <details><summary>Speaker notes</summary><label>Private only until exported<textarea name="notes" maxlength="4000" rows="4"></textarea></label><p class="hint">Notes are included in JSON and HTML downloads. Remove private notes before sharing.</p></details>
+      <button class="primary apply" type="submit">Apply changes</button>
+    </form>
+    <div class="file-actions"><h3>Keep your work</h3><button id="download-html">Download HTML</button><button id="download-json">Download JSON</button><button id="import-json">Open JSON</button><input id="json-file" type="file" accept=".json,application/json" hidden><p class="hint">HTML opens anywhere. JSON is editable source. Downloads do not publish changes.</p></div>
+  </aside>
+  <main id="deck" tabindex="-1" aria-label="Presentation"></main>
+  <footer class="transport">
+    <button id="overview-open" aria-label="Open slide overview" title="Slide overview (I)"><span aria-hidden="true">▦</span> <span class="overview-text">Overview</span></button>
+    <div class="transport-center"><button id="previous" aria-label="Previous slide">←</button><span id="position" aria-live="polite"></span><button id="next" aria-label="Next slide">→</button></div>
+    <div class="transport-end"><button id="motion" aria-pressed="false" title="Pause or resume diagram animation">Pause motion</button><span class="key-hint">← → to navigate</span></div>
+  </footer>
+  <dialog id="overview"><div class="dialog-heading"><div><p class="micro">THE WHOLE STORY</p><h2>Choose your next page.</h2></div><button data-close="overview" aria-label="Close overview">×</button></div><div id="overview-grid"></div></dialog>
+  <dialog id="print-dialog"><div class="dialog-heading"><h2>Take it to paper.</h2><button data-close="print-dialog" aria-label="Close print options">×</button></div><p>Choose what to include, then select “Save as PDF” in your browser. Use landscape, no margins, and background graphics.</p><label class="radio"><input type="radio" name="print-content" value="slides" checked> Slides only · one canvas per page</label><label class="radio"><input type="radio" name="print-content" value="details"> Slides + details · supporting pages included</label><button id="print-now" class="primary">Print / Save PDF</button></dialog>
+  <div id="toast" role="status" hidden></div>
+  <noscript><p class="noscript">Enable JavaScript to view and edit this presentation. No network connection is required.</p></noscript>
+  <script type="application/json" id="deck-data">FOLD_DECK_JSON</script>
+  <script>/* FOLD_MODEL */</script>
+  <script>/* FOLD_RENDERERS */</script>
+  <script>/* FOLD_APP */</script>
+</body>
+</html>
