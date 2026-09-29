@@ -4,6 +4,8 @@
 
 One clear screen, with optional depth below it. Fold is an editable, portable HTML presentation template with seven original design examples. Open `index.html` directly; presenting and editing require no installation, account, server, or network connection.
 
+[Open the live example](https://smithright.github.io/smithright-tools/presentation-template/) · [Authoring contract](AUTHORING.md)
+
 ## Try it
 
 1. Download this folder, then open **index.html** in a modern browser.
@@ -76,6 +78,8 @@ The output is a static HTML file. It works at a repository subpath without a rou
 For a copied repository, select **Settings → Pages → Deploy from a branch**, choose the branch containing `presentation-template/index.html`, and choose **/ (root)**. The deck will be at `https://<owner>.github.io/<repository>/presentation-template/`. Add an empty `.nojekyll` file at the publishing root when serving a branch directly.
 
 This repository also includes a scoped validation workflow. It rebuilds and checks the committed artifact, exercises browser editing and exports, and uploads test screenshots and PDFs. Publishing is a separate action from these checks.
+
+The initial live example is served from `gh-pages`, containing only the generated presentation, its license, a version receipt, and a root redirect. Updating source in a pull request does not update that preview. After rebuilding and verification, update `gh-pages/presentation-template/index.html` to publish; keep its version receipt aligned with the source commit and SHA-256.
 
 ## Source map
 
