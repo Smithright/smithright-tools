@@ -1,0 +1,629 @@
+<!doctype html>
+<!--
+Fold — Copyright (c) 2026 Smithright. MIT License.
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Fold: a portable, editable presentation with room for the details. A Smithright Tools open template.">
+  <meta name="color-scheme" content="light dark">
+  <title>Fold — an open presentation template</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23151918'/%3E%3Cpath d='M8 7h17v6H14v4h8v5h-8v5H8z' fill='%23dbf2ac'/%3E%3C/svg%3E">
+  <style>/* Fold — layout, player, editor, and print share one semantic document. */
+:root{font-family:Inter,"Helvetica Neue",Arial,sans-serif;color:#1a2420;background:#e5e7e1;font-synthesis:none;--chrome:#fafbf7;--line:#d4d9cf;--ink:#19221d;--green:#d9edb7;color-scheme:light;scroll-behavior:smooth}
+*{box-sizing:border-box}body{margin:0}button,input,select,textarea{font:inherit}button,a,input,select,textarea{touch-action:manipulation}button{cursor:pointer;border:1px solid var(--line);border-radius:7px;padding:9px 13px;background:transparent;color:inherit;font-size:12px;font-weight:550;line-height:1.2}button:hover{background:#e8eddf;border-color:#aebca4}button:disabled{opacity:.35;cursor:default}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid #497645;outline-offset:3px}button.primary{background:var(--ink);border-color:var(--ink);color:#f1f7e7}button.primary:hover{background:#35502d}.skip{position:fixed;left:20px;top:-100px;z-index:1000;padding:12px;background:#fff;color:#000}.skip:focus{top:10px}[hidden]{display:none!important}.app-header{height:62px;display:flex;gap:24px;align-items:center;padding:0 26px;background:var(--chrome);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:30}.wordmark{font-size:25px;font-weight:850;letter-spacing:-1.8px;text-decoration:none;color:var(--ink);display:flex;align-items:center}.wordmark>span:first-child{font-weight:300}.wordmark-dot{font-size:22px;margin-left:6px;letter-spacing:0;color:#708861}.app-description{font-size:11px;color:#647061;letter-spacing:.025em}.app-header nav{display:flex;gap:7px;margin-left:auto}.app-header button[aria-pressed=true]{background:#dcebbb;border-color:#a6bb86}.app-header nav button{white-space:nowrap}.transport{position:fixed;bottom:0;left:0;right:0;height:50px;background:var(--chrome);border-top:1px solid var(--line);z-index:30;display:flex;align-items:center;justify-content:space-between;padding:0 26px}.transport button{border-color:transparent;padding:7px 10px}.transport-center{display:flex;align-items:center;gap:15px;position:absolute;left:50%;transform:translateX(-50%)}#position{font-size:11px;letter-spacing:2px;min-width:57px;text-align:center;font-variant-numeric:tabular-nums}.transport-end{display:flex;align-items:center;gap:15px}.key-hint{font-size:10px;color:#73806e}#deck{padding-bottom:50px;outline:0}.slide-front{min-height:calc(100svh - 112px);position:relative;display:flex;align-items:center;justify-content:center;padding:10px 20px 28px}.canvas{position:relative;isolation:isolate;overflow:hidden;width:min(100%,calc((100svh - 158px)*16/9));aspect-ratio:16/9;flex-shrink:0;container-type:inline-size;background:#f4f0e7;color:#19211d;box-shadow:0 10px 40px #26322414}.slide-copy{position:absolute;z-index:2;top:7.3%;left:6%;width:47%}.eyebrow{font-size:.73cqw;letter-spacing:.17em;font-weight:650;margin:0 0 4.5cqw;white-space:pre-wrap}h1{font-size:4.9cqw;letter-spacing:-.052em;line-height:1.025;margin:0;font-weight:650}p.lead{font-size:1.2cqw;line-height:1.55;letter-spacing:-.01em;margin:2.2cqw 0 0}.canvas-footer{position:absolute;left:6%;right:6%;bottom:4.2%;display:flex;align-items:center;justify-content:space-between;gap:16px;font-size:.58cqw;letter-spacing:.11em;font-weight:600;z-index:3}.canvas-footer>span:last-child{font-size:.83cqw;white-space:nowrap}.muted{opacity:.5}.art{position:absolute;right:1.8%;top:7%;width:49%;height:77%;display:flex;align-items:center}.art svg{width:100%;height:auto;overflow:visible;display:block}.art text{font-family:Inter,"Helvetica Neue",Arial,sans-serif;fill:currentColor}.detail-link{position:absolute;bottom:5px;border:0;font-size:10px;letter-spacing:.035em;color:#596a53;padding:3px 10px}.detail-link span{margin-left:7px}.below-fold{max-width:1140px;padding:80px 50px 100px;margin:0 auto;display:grid;grid-template-columns:1fr 1.2fr;gap:75px;color:#243124}.detail-intro h2{font-size:36px;line-height:1.1;letter-spacing:-1.3px;font-weight:550}.micro{font-size:10px;letter-spacing:.16em;color:#69815b;font-weight:650}.detail-copy h3{font-size:20px;letter-spacing:-.4px}.detail-copy p{font-size:16px;line-height:1.7;color:#52604c;white-space:pre-wrap;overflow-wrap:anywhere}.detail-copy article+article{margin-top:38px}.reading .slide{border-bottom:1px solid #bdc8b4}.reading .canvas{box-shadow:0 8px 40px #26322414}.reading .slide-front{padding-top:25px}.reading .below-fold{padding-top:50px}.editing #deck{margin-left:350px}.editing .canvas{width:min(100%,calc((100svh - 158px)*16/9))}.editing .transport{padding-left:365px}.editing .transport-center{left:calc(50% + 175px)}
+/* Seven distinct art directions. */
+.editorial-art{right:2.5%;width:47%;top:0;height:82%}.design-editorial h1{font-size:5.25cqw}.design-editorial .lead{font-size:1.14cqw}.editorial-items{position:absolute;left:6%;right:6%;bottom:12.5%;display:grid;grid-template-columns:repeat(3,1fr);gap:2cqw;border-top:1px solid #262e262e;padding-top:1.3cqw}.editorial-items strong{font-size:.87cqw;letter-spacing:-.01em}.editorial-items p{font-size:.73cqw;color:#737366;margin:.5cqw 0 0}.design-blueprint{background:#f2f7ff;color:#1c53a7}.design-blueprint h1{font-size:4.5cqw;max-width:40cqw}.design-blueprint .slide-copy{width:42%;top:9%}.design-blueprint .lead{color:#527095;font-size:1.12cqw}.blueprint-art{top:13%;right:3%;width:53%;height:70%;color:var(--accent)}.connector{fill:none;stroke:currentColor;stroke-width:2}.drawing-note{position:absolute;left:6%;bottom:17%;font-family:ui-monospace,monospace;font-size:.68cqw;display:flex;gap:.8cqw;align-items:center}.drawing-note span:last-child{opacity:.6}.crosshair{font-size:2.1cqw;margin-right:.5cqw}.design-system{background:#0a201a;color:#edf4e7}.design-system h1{font-size:4.65cqw}.design-system .eyebrow{color:var(--accent)}.design-system .lead{color:#9fb8a9}.system-art{right:3%;top:5%;height:83%;width:49%}.system-path{fill:none;stroke:var(--accent);stroke-width:2;opacity:.5}.orbit{fill:none;stroke:#5b785b;stroke-width:1;stroke-dasharray:2 10}.orbit-dots{transform-origin:400px 325px;animation:orbit 12s linear infinite}.system-caption{position:absolute;left:6%;bottom:17%;display:flex;align-items:center;gap:.7cqw;font: .62cqw ui-monospace,monospace;letter-spacing:.06em}.signal-dot{width:.5cqw;height:.5cqw;border-radius:50%;background:var(--accent);box-shadow:0 0 14px #c4f46d44}.design-system .canvas-footer{color:#adc3b6}.design-isometric{background:#faf3e8;color:#49362c}.design-isometric .eyebrow{color:#ae7353}.design-isometric h1{font-family:Georgia,serif;font-weight:400;font-size:4.7cqw;letter-spacing:-.04em;line-height:1.06}.design-isometric .lead{color:#94765e}.iso-art{right:1.5%;top:10%;width:54%;height:76%}.iso-legend{position:absolute;left:6%;bottom:16%;display:flex;flex-direction:column;gap:.8cqw;font-size:.75cqw;color:#876c56}.iso-legend b{display:inline-block;color:var(--accent);margin-right:1cqw;font-size:.6cqw}.design-cinematic{color:#f5efe3;background:#081622}.cinematic-background{position:absolute;inset:0;z-index:0}.cinematic-background svg{width:100%;height:100%;display:block}.design-cinematic .slide-copy{top:12%;width:66%}.design-cinematic .eyebrow{color:var(--accent);margin-bottom:6.4cqw;letter-spacing:.22em}.design-cinematic h1{font-family:Georgia,"Times New Roman",serif;font-weight:400;font-size:6.1cqw;letter-spacing:-.045em;line-height:1.04;text-shadow:0 3px 30px #0004}.design-cinematic .lead{color:#bdc3c5;font-size:1.08cqw;letter-spacing:.025em}.chapter-mark{position:absolute;left:6%;bottom:16%;display:flex;gap:1.3cqw;align-items:center;color:#d9c7ad;font-size:.65cqw;text-transform:uppercase;letter-spacing:.18em}.chapter-mark>span:first-child{display:block;width:.45cqw;height:.45cqw;border:1px solid var(--accent);transform:rotate(45deg)}.chapter-rule{width:3cqw;height:1px;background:#aab2b44d}.design-cinematic .canvas-footer{color:#b5bbc0}.design-data{background:#eae9df;color:#262a22}.design-data .slide-copy{width:40%}.design-data h1{font-size:4.45cqw;font-weight:600}.design-data .eyebrow{color:#747c68}.design-data .lead{color:#707767}.chart{position:absolute;right:6%;top:26%;width:43%}.chart-heading{display:flex;justify-content:space-between;font-size:.62cqw;letter-spacing:.12em;padding-bottom:1.4cqw;border-bottom:1px solid #b8c0ad}.chart-row{position:relative;margin-top:1.7cqw;padding-bottom:1.6cqw}.chart-label{display:flex;justify-content:space-between;font-size:.8cqw}.chart-label span{font-size:.65cqw;color:#747c68}.bar-track{height:2.8cqw;margin-top:.8cqw;background:#d6dacb;width:87%;position:relative;background-image:linear-gradient(to right,#b7c0ad55 1px,transparent 1px);background-size:25% 100%}.bar{height:100%;background:#8c9b79}.bar-1{background:var(--accent)}.bar-2{background:transparent;border:1.5px dashed #849277}.chart-value{position:absolute;right:0;bottom:1.8cqw;font-size:2.3cqw;letter-spacing:-.08em;font-variant-numeric:tabular-nums}.chart-scale{display:flex;justify-content:space-between;width:87%;font-size:.57cqw;color:#748066;border-top:1px solid #bac2af;padding-top:.5cqw}.chart-note{font-size:.65cqw;color:#737e68;margin-top:1.5cqw}.data-mark{position:absolute;left:6%;bottom:17%;font-family:Georgia,serif;font-size:4cqw;color:var(--accent);display:flex;align-items:center;gap:1.5cqw}.data-mark span{font: .75cqw Inter,Arial,sans-serif;color:#7d836f}.design-type{background:#443464;color:#eee7fa}.design-type .eyebrow{color:var(--accent)}.design-type h1{font-size:6.1cqw;line-height:.98;font-weight:600;letter-spacing:-.065em}.design-type .slide-copy{width:70%}.design-type .lead{color:#c6b9da;font-size:1.08cqw}.type-orbit{position:absolute;right:4%;top:14%;width:30%;aspect-ratio:1;border:1px solid #bbadd64d;border-radius:50%;display:flex;justify-content:center;align-items:center;transform:rotate(-15deg)}.type-orbit:before,.type-orbit:after{content:"";position:absolute;border:1px solid #bbadd64d;border-radius:50%;inset:8%;transform:rotate(35deg) scaleX(.7)}.type-orbit:after{transform:rotate(-35deg) scaleX(.7)}.type-orbit span{font-size:19cqw;color:var(--accent);line-height:1;transform:rotate(15deg);font-weight:250}.type-steps{position:absolute;bottom:13%;left:6%;right:6%;display:flex;gap:4.5cqw;border-top:1px solid #e6d5ff33;padding-top:1.3cqw}.type-steps div{display:flex;align-items:center;gap:1.2cqw;font-size:.83cqw}.type-steps b{font: .7cqw ui-monospace,monospace;color:var(--accent)}.design-type .canvas-footer{color:#c3b5d5}
+/* Editing: visible selection, explicit apply, portable saves. */
+#editor{position:fixed;top:62px;bottom:50px;left:0;width:350px;z-index:25;background:#f8faf4;border-right:1px solid #c9d2c0;padding:22px 18px;overflow-y:auto;scrollbar-width:thin}.editor-head{display:flex;justify-content:space-between;align-items:center}.editor-head h2{font-size:23px;font-weight:550;letter-spacing:-.8px;margin:8px 0}.editor-head .micro{margin:0}.editor-head button{font-size:24px;border:0;padding:3px 8px}.save-status{font-size:11px;line-height:1.6;background:#e6eddc;padding:9px 11px;border-radius:5px;color:#485e38}.editor-actions{display:flex;gap:5px}.editor-actions button{font-size:10px;padding:7px 9px}.list-label{display:flex;justify-content:space-between;font-size:9px;color:#7e8b73;margin:24px 0 10px;letter-spacing:.05em}.list-label span:first-child{font-weight:650}#slide-list{padding:0;margin:0;list-style:none;display:grid;gap:7px}.slide-row{display:flex;align-items:center;gap:6px;background:#f0f3e9;border:1px solid transparent;border-radius:7px;padding:5px}.slide-row.selected{border-color:#789756;background:#e7efd9}.slide-row.drag-over{border-top:3px solid #5e842e}.slide-row.dragging{opacity:.45}.slide-row .slide-select{border:0;background:none;display:flex;gap:9px;align-items:center;text-align:left;flex:1;min-width:0;padding:3px}.mini-swatch{width:46px;height:30px;flex-shrink:0;border-radius:3px;font-family:Georgia,serif;font-size:22px;text-align:center;line-height:30px;background:var(--swatch);color:var(--swatch-ink);overflow:hidden}.slide-select .row-text{font-size:11px;line-height:1.3;min-width:0}.row-text strong{font-weight:550;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:160px}.row-text small{display:block;color:#7d8c72;font-size:9px;margin-top:3px}.row-moves{display:flex}.row-moves button{padding:5px 4px;font-size:12px;border:0}.drag-handle{font-size:15px;color:#94a487;cursor:grab}.field-heading{display:flex;justify-content:space-between;align-items:center;margin-top:24px}.field-heading h3,.file-actions h3{font-size:13px;font-weight:650}.field-heading code{font-size:9px;color:#7c8f6b}label{display:flex;flex-direction:column;gap:6px;font-size:11px;color:#55684b;margin:12px 0}input,select,textarea{background:#fff;color:#23301e;border:1px solid #cbd3c0;border-radius:5px;padding:8px 10px;width:100%;font-size:12px}textarea{resize:vertical;line-height:1.45}input[type=color]{padding:3px;height:33px}#slide-form details{margin-top:15px;border-top:1px solid #d6ddcc;padding-top:13px}summary{font-size:11px;cursor:pointer;font-weight:550;color:#566b48}.hint{font-size:10px;line-height:1.6;color:#7e8e71}.apply{width:100%;margin-top:20px}.file-actions{border-top:1px solid #d6ddcc;margin-top:22px;padding-top:10px}.file-actions button{font-size:10px;padding:8px;margin-right:3px}.item-fieldset,.detail-fieldset{border:1px solid #d9e1ce;border-radius:5px;padding:7px 10px;margin-top:12px}.item-fieldset legend,.detail-fieldset legend{font-size:9px;color:#8a9b7c;padding:0 4px}.remove-detail{font-size:10px}#add-detail{margin-top:10px;font-size:10px}.draft-banner{position:fixed;top:70px;left:50%;transform:translateX(-50%);z-index:60;background:#eaf4d9;border:1px solid #bed299;border-radius:8px;box-shadow:0 5px 25px #14231c22;padding:12px;display:flex;align-items:center;gap:12px;font-size:12px;width:max-content;max-width:94vw}.draft-banner button{font-size:11px}#toast{position:fixed;left:50%;bottom:65px;transform:translateX(-50%);z-index:200;background:#1b2b1f;color:#edf5e4;padding:12px 18px;border-radius:8px;font-size:12px;max-width:90vw;box-shadow:0 8px 30px #0002}.noscript{padding:30px}dialog{border:1px solid #c9d5ba;border-radius:14px;background:#f7f9f1;color:#25311d;padding:28px;width:min(960px,94vw);max-height:85svh;box-shadow:0 20px 100px #0005}dialog::backdrop{background:#0f1b13a6;backdrop-filter:blur(4px)}.dialog-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:20px}.dialog-heading h2{margin:5px 0 22px;font-size:27px;letter-spacing:-.8px;font-weight:550}.dialog-heading button{border:0;font-size:24px;padding:3px 8px}#overview-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.overview-card{padding:0;border:0;background:none!important;text-align:left;min-width:0}.overview-card .canvas{width:100%;box-shadow:none;pointer-events:none;border-radius:4px}.overview-card>span{display:block;margin:9px 0 4px;font-size:11px}.overview-card small{color:#7d8e70;font-size:10px}.overview-card.current .canvas{outline:3px solid #789c4d;outline-offset:3px}#print-dialog{width:min(510px,94vw)}#print-dialog p{font-size:13px;line-height:1.6;color:#657659}.radio{display:flex;flex-direction:row;align-items:center;gap:10px;font-size:12px;margin:20px 0}.radio input{width:auto;accent-color:#526f2d}#print-now{margin-top:12px}.paused *{animation-play-state:paused!important}html:fullscreen .app-description{display:none}html:fullscreen .app-header{background:#f5f7ee}html:fullscreen .slide-front{padding-top:6px}.form-dirty .apply{background:#43662c;border-color:#43662c}
+@keyframes orbit{to{transform:rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){:root{scroll-behavior:auto}*,*:before,*:after{animation:none!important;transition:none!important}}
+@media(max-width:1050px){.app-description{display:none}.editing .transport-end{display:none}.editing .transport-center{position:static;transform:none}.editing .slide-front{padding-left:10px;padding-right:10px}}
+@media(max-width:700px){.app-header{padding:0 13px;gap:12px;height:58px}.wordmark{font-size:23px}.app-header nav{gap:3px}.app-header button{font-size:10px;padding:8px}.transport{padding:0 10px}.key-hint{display:none}.transport-end button{font-size:10px}.overview-text{display:none}.transport-center{gap:6px}.slide-front{min-height:calc(100svh - 108px);padding:14px 12px 30px}.canvas{aspect-ratio:auto;min-height:calc(100svh - 158px);width:100%;display:flex;flex-direction:column;padding:8% 7% 12%;container-type:inline-size}.slide-copy,.design-blueprint .slide-copy,.design-cinematic .slide-copy,.design-data .slide-copy,.design-type .slide-copy{position:relative;top:auto;left:auto;width:100%;z-index:2}.eyebrow{font-size:2.1cqw!important;margin-bottom:6cqw!important}.canvas h1,.design-editorial h1,.design-cinematic h1,.design-type h1{font-size:10cqw;max-width:none}.canvas .lead{font-size:3.2cqw;margin-top:4cqw}.art,.editorial-art,.blueprint-art,.system-art,.iso-art{position:relative;top:auto;right:auto;width:100%;height:auto;max-height:none;margin:3cqw auto 8cqw}.art svg{max-height:62cqw}.editorial-art{width:73%;margin:2cqw auto}.editorial-items{position:relative;bottom:auto;left:auto;right:auto;gap:3cqw;padding-top:3cqw;margin-bottom:3cqw}.editorial-items strong{font-size:2.6cqw}.editorial-items p{font-size:2.2cqw;margin-top:2cqw;line-height:1.4}.canvas-footer{bottom:4%;left:7%;right:7%;font-size:1.45cqw;line-height:1.5}.canvas-footer>span:first-child{max-width:78%}.canvas-footer>span:last-child{font-size:2cqw}.drawing-note,.system-caption{position:relative;left:auto;bottom:auto;font-size:1.65cqw;margin-bottom:6cqw;gap:1cqw}.crosshair{font-size:4cqw}.signal-dot{width:1.5cqw;height:1.5cqw}.iso-legend{position:relative;left:auto;bottom:auto;gap:2cqw;font-size:2.5cqw;margin-bottom:5cqw}.iso-legend b{font-size:2cqw;margin-right:3cqw}.design-cinematic{min-height:calc(100svh - 158px);justify-content:center;padding-bottom:24%}.design-cinematic .cinematic-background svg{width:100%;height:100%}.design-cinematic h1{font-size:12cqw}.design-cinematic .eyebrow{margin-bottom:12cqw!important}.chapter-mark{left:7%;bottom:17%;font-size:1.8cqw;gap:2.5cqw}.chapter-mark>span:first-child{width:1.1cqw;height:1.1cqw}.chapter-rule{width:5cqw}.chart{position:relative;right:auto;top:auto;width:100%;margin:9cqw 0}.chart-heading{font-size:1.8cqw;padding-bottom:4cqw}.chart-row{margin-top:5cqw;padding-bottom:4cqw}.chart-label{font-size:2.8cqw}.chart-label span{font-size:2cqw}.bar-track{height:7cqw;margin-top:2cqw}.chart-value{bottom:4.3cqw;font-size:6cqw}.chart-scale{font-size:1.8cqw;padding-top:2cqw}.chart-note{font-size:2cqw;margin-top:4cqw}.data-mark{display:none}.type-orbit{position:relative;width:60%;top:auto;right:auto;margin:6cqw auto}.type-orbit span{font-size:37cqw}.type-steps{position:relative;left:auto;right:auto;bottom:auto;padding-top:3cqw;gap:4cqw;justify-content:space-between}.type-steps div{font-size:2.4cqw;gap:2cqw}.type-steps b{font-size:2cqw}.below-fold{grid-template-columns:1fr;gap:20px;padding:45px 28px 60px}.detail-intro h2{font-size:30px}.detail-copy p{font-size:15px}#editor{top:58px;width:min(350px,100vw);box-shadow:15px 0 60px #10251730}.editing #deck{margin-left:0}.editing .transport{padding-left:10px}.editing .transport-center{position:absolute;left:50%;transform:translateX(-50%)}#overview-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.overview-card .canvas{aspect-ratio:16/9;min-height:0;height:100px;padding:12px;display:block}.overview-card .canvas .slide-copy{position:relative;inset:auto;width:100%}.overview-card .canvas .eyebrow{font-size:4px!important;margin-bottom:7px!important}.overview-card .canvas h1{font-size:16px!important}.overview-card .canvas .lead,.overview-card .art,.overview-card .editorial-items,.overview-card .canvas-footer,.overview-card .chart,.overview-card .type-orbit,.overview-card .type-steps,.overview-card .drawing-note,.overview-card .system-caption,.overview-card .iso-legend,.overview-card .chapter-mark{display:none}.draft-banner{flex-wrap:wrap;justify-content:center}.draft-banner span{width:100%;text-align:center}.detail-link{bottom:8px}}
+/* Print is a separate layout, not a screenshot of the current viewport. */
+@page{size:320mm 180mm;margin:0}
+@media print{
+  :root,body{background:white!important;color:#111!important}*{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;animation:none!important;transition:none!important}
+  .app-header,.transport,#editor,.draft-banner,dialog,#toast,.detail-link,.skip,noscript{display:none!important}
+  #deck,.editing #deck{padding:0;margin:0;width:320mm}.slide,.slide[hidden]{display:block!important;border:0!important;break-after:page}.slide-front{display:block!important;width:320mm;height:180mm;min-height:0;padding:0;break-after:page;break-inside:avoid}
+  .canvas{display:block!important;width:320mm!important;height:180mm!important;min-height:0!important;aspect-ratio:16/9!important;padding:0!important;box-shadow:none!important;overflow:hidden!important}
+  .below-fold{display:none!important}.print-details .below-fold{display:block!important;max-width:none;padding:18mm 24mm;margin:0;break-before:page;break-after:page}.print-details .detail-intro h2{font-size:27pt}.print-details .detail-copy p{font-size:13pt;line-height:1.6}.print-details .detail-copy h3{font-size:17pt;break-after:avoid}.print-details .detail-copy article{break-inside:auto}.print-details .detail-copy p{orphans:3;widows:3}.print-details .detail-copy{max-width:240mm}
+}
+</style>
+</head>
+<body>
+  <a class="skip" href="#deck">Skip to presentation</a>
+  <header class="app-header">
+    <a class="wordmark" href="#" aria-label="Fold, first slide">F<span>O</span>LD<span class="wordmark-dot">↗</span></a>
+    <span class="app-description">A little structure. Endless possibility.</span>
+    <nav aria-label="View controls">
+      <button id="read-mode" aria-pressed="false">Read</button>
+      <button id="edit-mode" aria-pressed="false">Edit</button>
+      <button id="print-open" title="Print or save as PDF">Print / PDF</button>
+      <button id="fullscreen" class="primary" title="Fullscreen (F)">Present <span aria-hidden="true">↗</span></button>
+    </nav>
+  </header>
+  <aside id="draft-banner" class="draft-banner" hidden><span>A saved draft is available in this browser.</span><button id="restore-draft">Restore draft</button><button id="dismiss-draft">Use file version</button></aside>
+  <aside id="editor" aria-label="Deck editor" hidden>
+    <div class="editor-head"><div><p class="micro">YOUR WORKSPACE</p><h2>Make it yours.</h2></div><button id="close-editor" aria-label="Close editor">×</button></div>
+    <p id="save-status" class="save-status" role="status">Edits are local. Download to keep or share.</p>
+    <div class="editor-actions"><button id="undo" disabled>Undo</button><button id="redo" disabled>Redo</button><button id="add-slide">Duplicate slide</button></div>
+    <div class="list-label"><span>SLIDES</span><span>Drag or use ↑ ↓ to reorder</span></div>
+    <ol id="slide-list" aria-label="Slide order"></ol>
+    <form id="slide-form">
+      <div class="field-heading"><h3>Slide content</h3><code id="slide-id"></code></div>
+      <label>Design<select name="layout" id="layout"></select></label>
+      <label>Eyebrow<input name="eyebrow" maxlength="100"></label>
+      <label>Headline<textarea name="title" maxlength="140" rows="3"></textarea></label>
+      <label>Supporting text<textarea name="body" maxlength="300" rows="3"></textarea></label>
+      <label>Accent color<input name="accent" type="color"></label>
+      <label>Footnote<input name="label" maxlength="150"></label>
+      <details><summary>Diagram labels / chart values</summary><div id="item-fields"></div></details>
+      <details><summary>Below-the-fold details</summary><div id="detail-fields"></div><button id="add-detail" type="button">Add detail section</button></details>
+      <details><summary>Speaker notes</summary><label>Private only until exported<textarea name="notes" maxlength="4000" rows="4"></textarea></label><p class="hint">Notes are included in JSON and HTML downloads. Remove private notes before sharing.</p></details>
+      <button class="primary apply" type="submit">Apply changes</button>
+    </form>
+    <div class="file-actions"><h3>Keep your work</h3><button id="download-html">Download HTML</button><button id="download-json">Download JSON</button><button id="import-json">Open JSON</button><input id="json-file" type="file" accept=".json,application/json" hidden><p class="hint">HTML opens anywhere. JSON is editable source. Downloads do not publish changes.</p></div>
+  </aside>
+  <main id="deck" tabindex="-1" aria-label="Presentation"></main>
+  <footer class="transport">
+    <button id="overview-open" aria-label="Open slide overview" title="Slide overview (I)"><span aria-hidden="true">▦</span> <span class="overview-text">Overview</span></button>
+    <div class="transport-center"><button id="previous" aria-label="Previous slide">←</button><span id="position" aria-live="polite"></span><button id="next" aria-label="Next slide">→</button></div>
+    <div class="transport-end"><button id="motion" aria-pressed="false" title="Pause or resume diagram animation">Pause motion</button><span class="key-hint">← → to navigate</span></div>
+  </footer>
+  <dialog id="overview"><div class="dialog-heading"><div><p class="micro">THE WHOLE STORY</p><h2>Choose your next page.</h2></div><button data-close="overview" aria-label="Close overview">×</button></div><div id="overview-grid"></div></dialog>
+  <dialog id="print-dialog"><div class="dialog-heading"><h2>Take it to paper.</h2><button data-close="print-dialog" aria-label="Close print options">×</button></div><p>Choose what to include, then select “Save as PDF” in your browser. Use landscape, no margins, and background graphics.</p><label class="radio"><input type="radio" name="print-content" value="slides" checked> Slides only · one canvas per page</label><label class="radio"><input type="radio" name="print-content" value="details"> Slides + details · supporting pages included</label><button id="print-now" class="primary">Print / Save PDF</button></dialog>
+  <div id="toast" role="status" hidden></div>
+  <noscript><p class="noscript">Enable JavaScript to view and edit this presentation. No network connection is required.</p></noscript>
+  <script type="application/json" id="deck-data">{
+  "schemaVersion": 1,
+  "id": "fold-examples",
+  "title": "Fold — ideas with room to unfold",
+  "author": "Smithright Tools",
+  "slides": [
+    {
+      "id": "the-fold",
+      "layout": "editorial",
+      "eyebrow": "01 / THE EDITORIAL CANVAS",
+      "title": "Make the point.\nLeave room\nto explore.",
+      "body": "A presentation for the room.\nA document for the curious.",
+      "accent": "#de482b",
+      "label": "FOLD / OPEN PRESENTATION TEMPLATE",
+      "items": [
+        {
+          "label": "Present",
+          "text": "One clear idea per screen."
+        },
+        {
+          "label": "Explore",
+          "text": "Scroll into the supporting detail."
+        },
+        {
+          "label": "Make it yours",
+          "text": "Edit, reorder, and take it with you."
+        }
+      ],
+      "details": [
+        {
+          "title": "The fold is a promise",
+          "body": "The first screen carries the argument. Evidence, explanation, and references live below it. A reader can go deeper without forcing a presenter to put everything on the screen."
+        },
+        {
+          "title": "Try this",
+          "body": "Use the arrows to explore the examples. Choose Read to see the full document, or Edit to change the deck. Everything here works without a connection. The examples contain illustrative content, not measured product results."
+        }
+      ],
+      "notes": "Open with the distinction between a clear argument and the material that supports it."
+    },
+    {
+      "id": "precision",
+      "layout": "blueprint",
+      "eyebrow": "02 / SVG · TECHNICAL PRECISION",
+      "title": "Make the structure\nvisible.",
+      "body": "Clean geometry. Named components.\nA system you can explain at a glance.",
+      "accent": "#165dd9",
+      "label": "REFERENCE ARCHITECTURE / ILLUSTRATIVE",
+      "items": [
+        {
+          "label": "Intent",
+          "text": "Define the outcome"
+        },
+        {
+          "label": "Policy",
+          "text": "Bound the action"
+        },
+        {
+          "label": "Execution",
+          "text": "Do the work"
+        },
+        {
+          "label": "Evidence",
+          "text": "Observe the result"
+        }
+      ],
+      "details": [
+        {
+          "title": "An editable drawing",
+          "body": "Every connector, node, and annotation is native SVG. Text remains text, lines remain crisp, and the diagram has an accessible description. Change the item labels in the editor or JSON to adapt the architecture."
+        },
+        {
+          "title": "Design principle",
+          "body": "Use position and connection to explain the relationship. Reserve color for emphasis. Avoid making a diagram depend on motion or color alone."
+        }
+      ],
+      "notes": "Walk from intent through the controlled execution path to evidence."
+    },
+    {
+      "id": "living-system",
+      "layout": "system",
+      "eyebrow": "03 / MOTION · SYSTEM BEHAVIOR",
+      "title": "Show the loop.\nNot just the boxes.",
+      "body": "A living system senses, decides, acts,\nand learns from what actually happened.",
+      "accent": "#c4f46d",
+      "label": "CONCEPTUAL FLOW / NOT LIVE TELEMETRY",
+      "items": [
+        {
+          "label": "Sense",
+          "text": "Signals + context"
+        },
+        {
+          "label": "Decide",
+          "text": "Intent + constraints"
+        },
+        {
+          "label": "Act",
+          "text": "Bounded execution"
+        },
+        {
+          "label": "Learn",
+          "text": "Evidence + feedback"
+        }
+      ],
+      "details": [
+        {
+          "title": "Motion with a job",
+          "body": "The traveling markers communicate direction and recurrence. Pause the motion to inspect the structure. Reduced-motion preferences are honored, and PDF output keeps the full static diagram."
+        },
+        {
+          "title": "An honest animation",
+          "body": "This is an explanatory animation. It is not connected to a service and does not claim that a real operation ran. Replace the labels to use the loop for product delivery, scientific experiments, or operational recovery."
+        }
+      ],
+      "notes": "Pause the animation when discussing an individual stage."
+    },
+    {
+      "id": "dimensional",
+      "layout": "isometric",
+      "eyebrow": "04 / ISOMETRIC · DIMENSIONAL THINKING",
+      "title": "Give abstract ideas\na place to live.",
+      "body": "An illustrated landscape of people,\nplatforms, and possibilities.",
+      "accent": "#bd422a",
+      "label": "ORIGINAL VECTOR SCENE / NO IMAGE DEPENDENCIES",
+      "items": [
+        {
+          "label": "People",
+          "text": "The reason to build"
+        },
+        {
+          "label": "Platform",
+          "text": "The shared foundation"
+        },
+        {
+          "label": "Possibility",
+          "text": "What comes next"
+        }
+      ],
+      "details": [
+        {
+          "title": "Dimension as a visual language",
+          "body": "Isometric projection gives a family of icons a shared perspective. Here, the buildings, layers, paths, and light source are drawn with SVG. There are no stock assets, remote fonts, or raster textures to retrieve."
+        },
+        {
+          "title": "Use it intentionally",
+          "body": "This style works for platform maps, product ecosystems, and journeys. For a quantitative comparison, use the chart example instead: decorative depth should never distort a measurement."
+        }
+      ],
+      "notes": "Use the scene as an overview, then move to specific relationships."
+    },
+    {
+      "id": "new-world",
+      "layout": "cinematic",
+      "eyebrow": "05 / CINEMATIC · WORLD BUILDING",
+      "title": "Beyond the\nknown horizon.",
+      "body": "Build a world worth stepping into.",
+      "accent": "#f8b85b",
+      "label": "CHAPTER ONE / THE NEXT FRONTIER",
+      "items": [
+        {
+          "label": "Atmosphere",
+          "text": "Light + depth"
+        },
+        {
+          "label": "Hierarchy",
+          "text": "One focal point"
+        },
+        {
+          "label": "Restraint",
+          "text": "Space to feel"
+        }
+      ],
+      "details": [
+        {
+          "title": "Game-studio art direction",
+          "body": "A restrained interface sits over an original vector environment: distant planet, layered terrain, atmospheric light, and a small human silhouette for scale. The composition borrows the discipline of cinematic title screens without copying a game or studio identity."
+        },
+        {
+          "title": "Built to travel",
+          "body": "The entire scene is SVG. It renders locally, remains sharp in print, and needs no downloaded art. The accent color controls the planet glow and the chapter marker."
+        }
+      ],
+      "notes": "Give this slide a moment of silence before introducing the next chapter."
+    },
+    {
+      "id": "evidence",
+      "layout": "data",
+      "eyebrow": "06 / DATA · EVIDENCE FIRST",
+      "title": "Let the evidence\ndo the talking.",
+      "body": "A clear comparison beats\na crowded dashboard.",
+      "accent": "#b93c26",
+      "label": "ILLUSTRATIVE DATA / NOT A PERFORMANCE CLAIM",
+      "items": [
+        {
+          "label": "Before",
+          "text": "Baseline process",
+          "value": 38
+        },
+        {
+          "label": "After",
+          "text": "Proposed process",
+          "value": 76
+        },
+        {
+          "label": "Target",
+          "text": "Desired outcome",
+          "value": 90
+        }
+      ],
+      "details": [
+        {
+          "title": "Read the scale",
+          "body": "The example compares three illustrative scores on a fixed 0–100 scale. Values are printed beside the bars, so color is not required to understand the chart. Edit the values in the slide content; bars and labels update together."
+        },
+        {
+          "title": "Supply the source",
+          "body": "For a real presentation, replace this text with the source, date, sample, measurement method, and uncertainty. Keep a comparison honest by using the same denominator and reporting meaningful limitations."
+        }
+      ],
+      "notes": "These are demonstration values. Do not present them as actual results."
+    },
+    {
+      "id": "your-turn",
+      "layout": "type",
+      "eyebrow": "07 / TYPOGRAPHY · A STRONG CLOSE",
+      "title": "Your ideas.\nYour rhythm.\nYour next move.",
+      "body": "Start with a point of view.\nMake the template your own.",
+      "accent": "#ddf5a1",
+      "label": "OPEN A DECK. CHANGE THE ORDER. TELL YOUR STORY.",
+      "items": [
+        {
+          "label": "01",
+          "text": "Choose Edit"
+        },
+        {
+          "label": "02",
+          "text": "Make a change"
+        },
+        {
+          "label": "03",
+          "text": "Download your deck"
+        }
+      ],
+      "details": [
+        {
+          "title": "A small creative instrument",
+          "body": "A single portable HTML file holds the presentation, its content, and the editor. JSON provides an uncomplicated authoring contract for people and agents. Stable IDs make precise changes possible without relying on slide numbers."
+        },
+        {
+          "title": "Share the result",
+          "body": "Download HTML to share a runnable deck, or JSON to keep editable source. Print slides alone or include the details. A hosted editor changes your local draft; publishing still requires updating the hosted file."
+        }
+      ],
+      "notes": "Invite the audience to try editing and exporting their own version."
+    }
+  ]
+}</script>
+  <script>/* Shared validation for the browser, build, and tests. No code or HTML in decks. */
+(function (root) {
+  'use strict';
+  const layouts = ['editorial', 'blueprint', 'system', 'isometric', 'cinematic', 'data', 'type'];
+  const reserved = new Set(['deck','deck-data','editor','overview','position','toast','layout','motion','fullscreen','previous','next','undo','redo','read-mode','edit-mode','print-open','draft-banner','restore-draft','dismiss-draft','close-editor','save-status','add-slide','slide-list','slide-form','slide-id','item-fields','detail-fields','add-detail','download-html','download-json','import-json','json-file','overview-open','overview-grid','print-dialog','print-now']);
+  function validate(deck) {
+    const fail = message => { throw new Error(message); };
+    const object = (value, path) => { if (!value || typeof value !== 'object' || Array.isArray(value)) fail(`${path} must be an object.`); };
+    const text = (value, path, max = 4000) => { if (typeof value !== 'string' || value.length > max) fail(`${path} must be text of at most ${max} characters.`); };
+    const keys = (value, allowed, path) => { for (const key of Object.keys(value)) if (!allowed.includes(key)) fail(`${path}: unknown field “${key}”.`); };
+    object(deck, 'Deck');
+    keys(deck, ['schemaVersion', 'id', 'title', 'author', 'slides'], 'Deck');
+    if (deck.schemaVersion !== 1) fail('Use schemaVersion 1.');
+    text(deck.id, 'Deck id', 64);
+    if (!/^[a-z][a-z0-9-]*$/.test(deck.id)) fail('Deck id must use lowercase letters, numbers, and hyphens.');
+    text(deck.title, 'Deck title', 160); text(deck.author, 'Deck author', 160);
+    if (!Array.isArray(deck.slides) || deck.slides.length < 1 || deck.slides.length > 80) fail('A deck needs 1–80 slides.');
+    const ids = new Set();
+    deck.slides.forEach((slide, index) => {
+      const at = `Slide ${index + 1}`; object(slide, at);
+      keys(slide, ['id', 'layout', 'eyebrow', 'title', 'body', 'accent', 'label', 'items', 'details', 'notes'], at);
+      text(slide.id, `${at} id`, 64);
+      if (!/^[a-z][a-z0-9-]*$/.test(slide.id) || ids.has(slide.id)) fail(`${at}: use a unique lowercase slide id.`);
+      if (reserved.has(slide.id) || /^(details-|preview-)/.test(slide.id)) fail(`${at}: “${slide.id}” is reserved for the player. Choose another id.`);
+      ids.add(slide.id);
+      if (!layouts.includes(slide.layout)) fail(`${at}: unknown layout.`);
+      for (const [field, max] of Object.entries({eyebrow:100, title:140, body:300, label:150, notes:4000})) text(slide[field], `${at} ${field}`, max);
+      if (!/^#[0-9a-f]{6}$/i.test(slide.accent)) fail(`${at}: accent must be a six-digit hex color.`);
+      const count = ['blueprint', 'system'].includes(slide.layout) ? 4 : 3;
+      if (!Array.isArray(slide.items) || slide.items.length !== count) fail(`${at}: ${slide.layout} needs exactly ${count} items.`);
+      slide.items.forEach((item, i) => {
+        object(item, `${at} item ${i+1}`); keys(item, ['label','text','value'], `${at} item ${i+1}`);
+        text(item.label, `${at} item label`, 35); text(item.text, `${at} item text`, 80);
+        if (slide.layout === 'data' && (!Number.isFinite(item.value) || item.value < 0 || item.value > 100)) fail(`${at}: chart values must be numbers from 0 to 100.`);
+        if ('value' in item && (!Number.isFinite(item.value) || item.value < 0 || item.value > 100)) fail(`${at}: item value must be between 0 and 100.`);
+      });
+      if (!Array.isArray(slide.details) || slide.details.length > 12) fail(`${at}: use at most 12 detail sections.`);
+      slide.details.forEach((detail, i) => { object(detail, `${at} detail ${i+1}`); keys(detail, ['title','body'], `${at} detail ${i+1}`); text(detail.title, `${at} detail title`, 160); text(detail.body, `${at} detail body`, 8000); });
+    });
+    return deck;
+  }
+  root.FoldModel = {layouts, validate};
+})(globalThis);
+</script>
+  <script>(function (root) {
+  'use strict';
+  const escape = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const lines = value => escape(value).replace(/\n/g, '<br>');
+  const svg = (content, description, viewBox='0 0 800 650') => `<svg viewBox="${viewBox}" role="img" aria-label="${escape(description)}" xmlns="http://www.w3.org/2000/svg">${content}</svg>`;
+  const label = (x,y,text,extra='') => `<text x="${x}" y="${y}" ${extra}>${escape(text)}</text>`;
+  const heading = s => `<div class="slide-copy"><p class="eyebrow">${escape(s.eyebrow)}</p><h1>${lines(s.title)}</h1><p class="lead">${lines(s.body)}</p></div>`;
+  const foot = (s,i,total) => `<div class="canvas-footer"><span>${escape(s.label)}</span><span>${String(i+1).padStart(2,'0')} <span class="muted">/ ${String(total).padStart(2,'0')}</span></span></div>`;
+  function editorial(s) {
+    const art=svg(`<defs><pattern id="${s.id}-dots" width="18" height="18" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="currentColor" opacity=".18"/></pattern></defs><rect x="55" y="25" width="680" height="595" fill="url(#${s.id}-dots)"/><circle cx="395" cy="310" r="245" fill="var(--accent)"/><path d="M395 65v490L640 310Z" fill="#f4f0e7"/><path d="M395 65 150 310h245Z" fill="#171d1b"/><path d="M395 310H150l245 245Z" fill="#e4dcd0"/><circle cx="395" cy="310" r="25" fill="#f4f0e7"/><path d="M75 310h-35m355-270V5m280 305h45M395 580v35" stroke="currentColor" stroke-width="2"/>`, 'A circle unfolds into four contrasting geometric planes.');
+    return `${heading(s)}<div class="art editorial-art">${art}</div><div class="editorial-items">${s.items.map(item=>`<div><strong>${escape(item.label)}</strong><p>${escape(item.text)}</p></div>`).join('')}</div>`;
+  }
+  function blueprint(s) {
+    const positions=[[105,120],[425,120],[425,350],[105,350]];
+    const content=`<defs><pattern id="${s.id}-grid" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0V32" fill="none" stroke="currentColor" opacity=".09"/></pattern><marker id="${s.id}-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="m0 0 10 5-10 5" fill="none" stroke="currentColor" stroke-width="1.5"/></marker></defs><rect x="0" y="0" width="800" height="620" fill="url(#${s.id}-grid)"/><rect x="40" y="50" width="720" height="520" rx="8" fill="none" stroke="currentColor" stroke-dasharray="5 7" opacity=".3"/><path d="M325 185h100m110 65v100m-110 65H325M215 350V250" class="connector" marker-end="url(#${s.id}-arrow)"/>${positions.map(([x,y],i)=>`<g><rect x="${x+7}" y="${y+7}" width="220" height="130" rx="4" fill="currentColor" opacity=".07"/><rect x="${x}" y="${y}" width="220" height="130" rx="4" fill="#f4f8ff" stroke="currentColor" stroke-width="1.5"/>${label(x+19,y+29,`0${i+1}`, 'font-size="12" opacity=".55"')}${label(x+19,y+68,s.items[i].label,'font-size="24" font-weight="650"')}${label(x+19,y+99,s.items[i].text,'font-size="13"')}</g>`).join('')}<circle cx="380" cy="300" r="24" fill="#f4f8ff" stroke="currentColor"/><path d="m370 300 7 7 13-15" fill="none" stroke="currentColor" stroke-width="2"/>${label(400,603,'A BOUNDED PATH FROM INTENT TO EVIDENCE','text-anchor="middle" font-size="11" letter-spacing="2"')}`;
+    return `${heading(s)}<div class="art blueprint-art">${svg(content, s.items.map(x=>x.label).join(' leads to ')+', with evidence feeding back into intent.')}</div><div class="drawing-note"><span class="crosshair">＋</span> FIG. 01 <span>STRUCTURE BEFORE COMPLEXITY</span></div>`;
+  }
+  function system(s) {
+    const positions=[[280,40],[500,265],[280,490],[60,265]];
+    const content=`<defs><linearGradient id="${s.id}-glow" x1="0" y1="0" x2="1" y2="1"><stop stop-color="var(--accent)" stop-opacity=".25"/><stop offset="1" stop-color="var(--accent)" stop-opacity="0"/></linearGradient></defs><circle cx="400" cy="325" r="257" fill="url(#${s.id}-glow)"/><circle cx="400" cy="325" r="223" class="orbit"/><path id="${s.id}-flow" d="M400 125a200 200 0 1 1 0 400a200 200 0 1 1 0-400" class="system-path"/><path d="m558 155 5 19-20-2m22 326-20 2 5-19m-326-1-5-19 20 2m-20-323 20-2-5 19" fill="none" stroke="var(--accent)" stroke-width="2"/><g class="orbit-dots"><circle cx="400" cy="125" r="7" fill="var(--accent)"/><circle cx="400" cy="525" r="7" fill="var(--accent)"/></g><circle cx="400" cy="325" r="87" fill="#142e27" stroke="var(--accent)" stroke-opacity=".35"/><path d="M377 325h46m-23-23v46" stroke="var(--accent)" stroke-width="2"/>${label(400,368,'FEEDBACK','font-size="10" letter-spacing="3" text-anchor="middle" fill="var(--accent)"')}${positions.map(([x,y],i)=>`<g><rect x="${x}" y="${y}" width="240" height="100" rx="12" fill="#132a23" stroke="#406249"/><circle cx="${x+25}" cy="${y+29}" r="4" fill="var(--accent)"/>${label(x+43,y+35,s.items[i].label,'font-size="24" font-weight="600" fill="#eff4e8"')}${label(x+25,y+73,s.items[i].text,'font-size="15" fill="#b8cabf"')}</g>`).join('')}`;
+    return `${heading(s)}<div class="art system-art">${svg(content, 'Continuous feedback loop: '+s.items.map(x=>`${x.label}, ${x.text}`).join('; '))}</div><div class="system-caption"><span class="signal-dot"></span> CONTINUOUS LEARNING <span class="muted">/ a conceptual model</span></div>`;
+  }
+  function isometric(s) {
+    const block=(x,y,w,h,d,color)=>`<g transform="translate(${x} ${y})"><path d="M0 0 ${w} ${-w*.5} ${w+d} ${(-w+d)*.5} ${d} ${d*.5}Z" fill="${color}"/><path d="M0 0 ${d} ${d*.5} ${d} ${d*.5+h} 0 ${h}Z" fill="${color}" filter="brightness(.82)"/><path d="M${d} ${d*.5} ${w+d} ${(-w+d)*.5} ${w+d} ${(-w+d)*.5+h} ${d} ${d*.5+h}Z" fill="${color}" filter="brightness(.63)"/><path d="M0 0 ${w} ${-w*.5} ${w+d} ${(-w+d)*.5} ${d} ${d*.5}Z" fill="none" stroke="#fff" stroke-opacity=".55"/></g>`;
+    const content=`<defs><radialGradient id="${s.id}-halo"><stop stop-color="#ead8bd"/><stop offset="1" stop-color="#faf3e8" stop-opacity="0"/></radialGradient><filter id="${s.id}-shadow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="13"/></filter></defs><ellipse cx="412" cy="455" rx="335" ry="160" fill="url(#${s.id}-halo)"/><ellipse cx="410" cy="515" rx="260" ry="55" fill="#8b7560" opacity=".18" filter="url(#${s.id}-shadow)"/>${block(100,365,320,20,320,'#dfd9cf')}${block(120,330,300,18,280,'#fcfaf4')}<path d="m250 340 180 90 170-85m-170 85v50" fill="none" stroke="var(--accent)" stroke-width="3" stroke-dasharray="8 5"/>${block(280,240,110,140,100,'#d77857')}${block(283,208,106,25,94,'#efab83')}${block(305,170,62,40,52,'#f2c29a')}${block(140,337,90,56,75,'#e7ca91')}${block(525,324,85,76,80,'#91b9a7')}${block(530,294,75,20,70,'#c4dbc9')}<g fill="#f9e8d8">${[0,1,2].map(i=>`<path d="m405 ${282+i*27} 23-11v13l-23 11z"/><path d="m438 ${265+i*27} 23-11v13l-23 11z"/>`).join('')}</g><g transform="translate(245 300)"><ellipse cy="43" rx="16" ry="7" fill="#766555" opacity=".15"/><path d="M-9 4v35m18-35v35" stroke="#263b39" stroke-width="8" stroke-linecap="round"/><path d="M-9 6v-24h18V6" fill="var(--accent)"/><circle cy="-30" r="10" fill="#ba805e"/></g><g transform="translate(490 403)"><ellipse cy="32" rx="12" ry="5" fill="#766555" opacity=".15"/><path d="M-6 5v25m12-25v25" stroke="#344638" stroke-width="6" stroke-linecap="round"/><rect x="-10" y="-20" width="20" height="27" rx="6" fill="#e7b153"/><circle cy="-28" r="9" fill="#966244"/></g><path d="M343 145V90h180" fill="none" stroke="#a58c77"/>${label(535,95,s.items[1].label,'font-size="20" fill="#775744"')}<path d="M198 330H100v-100" fill="none" stroke="#a58c77"/>${label(70,209,s.items[0].label,'font-size="20" fill="#775744"')}<path d="M615 290v-85h80" fill="none" stroke="#a58c77"/>${label(624,188,s.items[2].label,'font-size="20" fill="#775744"')}`;
+    return `${heading(s)}<div class="art iso-art">${svg(content, 'Isometric platform scene with three connected structures, people, and labeled layers: '+s.items.map(x=>x.label).join(', '))}</div><div class="iso-legend">${s.items.map((x,i)=>`<span><b>0${i+1}</b>${escape(x.text)}</span>`).join('')}</div>`;
+  }
+  function cinematic(s) {
+    let stars=''; for(let i=0;i<65;i++){const x=(i*137+83)%1600,y=(i*i*53+21)%520;stars+=`<circle cx="${x}" cy="${y}" r="${i%4===0?1.6:.8}" fill="#c6d9df" opacity="${.2+(i%5)*.13}"/>`;}
+    const art=svg(`<defs><linearGradient id="${s.id}-sky" x2="0" y2="1"><stop stop-color="#071019"/><stop offset=".7" stop-color="#263d4b"/><stop offset="1" stop-color="#b09271"/></linearGradient><radialGradient id="${s.id}-planet"><stop stop-color="#efd1a0"/><stop offset=".68" stop-color="var(--accent)"/><stop offset="1" stop-color="#9c6e47"/></radialGradient><radialGradient id="${s.id}-aura"><stop stop-color="var(--accent)" stop-opacity=".38"/><stop offset="1" stop-color="var(--accent)" stop-opacity="0"/></radialGradient><linearGradient id="${s.id}-shade"><stop stop-color="#030b13" stop-opacity=".88"/><stop offset=".6" stop-color="#030b13" stop-opacity=".08"/><stop offset="1" stop-color="#030b13" stop-opacity="0"/></linearGradient></defs><rect width="1600" height="900" fill="url(#${s.id}-sky)"/>${stars}<ellipse cx="1140" cy="330" rx="470" ry="370" fill="url(#${s.id}-aura)"/><circle cx="1150" cy="290" r="157" fill="url(#${s.id}-planet)"/><circle cx="1091" cy="238" r="150" fill="#0c1923" opacity=".91"/><path d="M0 648 90 589 160 614 310 512 400 557 505 433 630 512 771 453 855 508 974 408 1101 473 1243 369 1370 478 1480 391 1600 478V900H0Z" fill="#33464a"/><path d="M0 723 193 654 308 692 513 550 590 601 722 563 806 645 974 578 1056 623 1190 535 1325 624 1417 550 1600 662V900H0Z" fill="#1b303a"/><path d="M0 816 180 739 409 780 638 706 798 749 975 695 1131 709 1276 683 1447 742 1600 714V900H0Z" fill="#0b1c26"/><path d="m973 900 187-187 115-31 89 22-97 29-128 167Z" fill="#273e43"/><path d="m1160 713 115-31 89 22" fill="none" stroke="#ad9c7b" stroke-opacity=".5"/><g transform="translate(1269 657)" fill="#040a10"><circle cy="-13" r="7"/><path d="m-7-5-4 27h5l2-17 1 31h5l3-31 4 17h5L8-5Z"/></g><rect width="1600" height="900" fill="url(#${s.id}-shade)"/>`, 'Original cinematic landscape: a crescent planet above mountain layers and a lone explorer on a ridge.','0 0 1600 900').replace('<svg ', '<svg preserveAspectRatio="xMidYMid slice" ');
+    return `<div class="cinematic-background">${art}</div>${heading(s)}<div class="chapter-mark"><span></span> ${escape(s.items[0].text)} <span class="chapter-rule"></span> ${escape(s.items[1].text)}</div>`;
+  }
+  function data(s) {
+    return `${heading(s)}<div class="chart" role="img" aria-label="Illustrative scores on a 0 to 100 scale: ${s.items.map(x=>`${escape(x.label)} ${x.value}`).join(', ')}"><div class="chart-heading"><span>COMPARATIVE SCORE</span><span>0 — 100</span></div>${s.items.map((item,i)=>`<div class="chart-row"><div class="chart-label"><strong>${escape(item.label)}</strong><span>${escape(item.text)}</span></div><div class="bar-track"><div class="bar bar-${i}" style="width:${item.value}%"></div></div><span class="chart-value">${item.value}</span></div>`).join('')}<div class="chart-scale"><span>0</span><span>25</span><span>50</span><span>75</span><span>100</span></div><p class="chart-note">Same scale. Visible values. A source below the fold.</p></div><div class="data-mark">Aa<span>Numbers need context.</span></div>`;
+  }
+  function type(s) {return `${heading(s)}<div class="type-orbit" aria-hidden="true"><span>↗</span></div><div class="type-steps">${s.items.map(x=>`<div><b>${escape(x.label)}</b><span>${escape(x.text)}</span></div>`).join('')}</div>`;}
+  const renderers={editorial,blueprint,system,isometric,cinematic,data,type};
+  function canvas(slide,index,total) {return `<div class="canvas design-${slide.layout}" style="--accent:${slide.accent}">${renderers[slide.layout](slide)}${foot(slide,index,total)}</div>`;}
+  function slide(s,i,total) {return `<section class="slide" id="${s.id}" aria-label="${escape(s.title.replace(/\n/g,' '))}" data-slide-id="${s.id}"><div class="slide-front">${canvas(s,i,total)}${s.details.length?`<button class="detail-link" data-details="${s.id}">Explore the details <span aria-hidden="true">↓</span></button>`:''}</div>${s.details.length?`<div class="below-fold" id="details-${s.id}"><div class="detail-intro"><p class="micro">BELOW THE FOLD / ${String(i+1).padStart(2,'0')}</p><h2>${escape(s.title.replace(/\n/g,' '))}</h2></div><div class="detail-copy">${s.details.map(d=>`<article><h3>${escape(d.title)}</h3><p>${escape(d.body)}</p></article>`).join('')}</div></div>`:''}</section>`;}
+  root.FoldRender={escape,canvas,slide};
+})(globalThis);
+</script>
+  <script>(function () {
+  'use strict';
+  // Capture the unmodified document so downloads contain source, never editor state.
+  const licenseComment = [...document.childNodes].filter(node=>node.nodeType===8).map(node=>'<!--'+node.data+'-->').join('\n');
+  const sourceTemplate = '<!doctype html>\n' + licenseComment + '\n' + document.documentElement.outerHTML;
+  const $ = id => document.getElementById(id);
+  const clone = value => JSON.parse(JSON.stringify(value));
+  const {validate, layouts} = FoldModel;
+  const {escape, canvas, slide} = FoldRender;
+  const original = validate(JSON.parse($('deck-data').textContent));
+  let deck = clone(original), current = 0, reading = false, editing = false, dirty = false;
+  let past = [], future = [], dragId = null, observer, toastTimer, restoreCandidate = null;
+  const sourceString = JSON.stringify(original);
+  let fingerprint = 2166136261;
+  for (const c of sourceString) fingerprint = Math.imul(fingerprint ^ c.charCodeAt(0), 16777619);
+  const storageKey = `fold:v1:${original.id}:${(fingerprint >>> 0).toString(16)}`;
+  const designNames = {editorial:'Editorial / Swiss geometry',blueprint:'Blueprint / technical SVG',system:'System / animated feedback',isometric:'Isometric / dimensional scene',cinematic:'Cinematic / game-studio atmosphere',data:'Data / precise comparison',type:'Typography / expressive close'};
+  const swatches = {editorial:['#f4f0e7','#d6492b'],blueprint:['#e8f1ff','#165dd9'],system:['#0a201a','#c4f46d'],isometric:['#faf3e8','#bd422a'],cinematic:['#152530','#f8b85b'],data:['#eae9df','#b93c26'],type:['#443464','#ddf5a1']};
+  function notify(message) { $('toast').textContent=message; $('toast').hidden=false; clearTimeout(toastTimer); toastTimer=setTimeout(()=>$('toast').hidden=true,5500); }
+  function safeHash() { try {return decodeURIComponent(location.hash.slice(1));} catch {return '';} }
+  function setHash() { try {history.replaceState(null,'',`#${deck.slides[current].id}`);} catch { /* Sandboxed embeds may deny history; navigation still works. */ } }
+  function persist() {
+    try {localStorage.setItem(storageKey,JSON.stringify(deck));$('save-status').textContent='Draft saved in this browser. Download to keep or share.';}
+    catch {$('save-status').textContent='Browser storage unavailable. Download now to keep your changes.';}
+  }
+  function updateButtons() {
+    $('position').textContent=`${String(current+1).padStart(2,'0')} / ${String(deck.slides.length).padStart(2,'0')}`;
+    $('previous').disabled=current===0; $('next').disabled=current===deck.slides.length-1;
+    $('undo').disabled=!past.length; $('redo').disabled=!future.length;
+    $('add-slide').disabled=deck.slides.length>=80;
+  }
+  function renderDeck() {
+    if(observer)observer.disconnect();
+    $('deck').innerHTML=deck.slides.map((s,i)=>slide(s,i,deck.slides.length)).join('');
+    document.title=deck.title;
+    document.querySelectorAll('#deck > .slide').forEach((el,i)=>el.hidden=!reading&&i!==current);
+    if(reading){
+      observer=new IntersectionObserver(entries=>{
+        const visible=entries.filter(e=>e.isIntersecting).sort((a,b)=>b.intersectionRatio-a.intersectionRatio)[0];
+        if(visible){const index=deck.slides.findIndex(s=>s.id===visible.target.parentElement.id);if(index>=0){current=index;setHash();updateButtons();}}
+      },{rootMargin:'-62px 0px -50% 0px',threshold:[0,.2,.5]});
+      document.querySelectorAll('.slide-front').forEach(el=>observer.observe(el));
+    }
+    updateButtons();
+  }
+  function renderEditor() {
+    const s=deck.slides[current];
+    $('slide-list').innerHTML=deck.slides.map((item,i)=>{
+      const colors=swatches[item.layout];
+      return `<li class="slide-row ${i===current?'selected':''}" draggable="true" data-id="${item.id}"><span class="drag-handle" aria-hidden="true">⠿</span><button class="slide-select" data-select="${item.id}" ${i===current?'aria-current="true"':''}><span class="mini-swatch" style="--swatch:${colors[0]};--swatch-ink:${colors[1]}" aria-hidden="true">${item.layout==='type'?'↗':item.layout==='data'?'▥':'◒'}</span><span class="row-text"><strong>${escape(item.title.replace(/\n/g,' '))}</strong><small>${String(i+1).padStart(2,'0')} · ${escape(item.id)}</small></span></button><span class="row-moves"><button data-move="-1" data-id="${item.id}" aria-label="Move ${escape(item.id)} earlier" ${i===0?'disabled':''}>↑</button><button data-move="1" data-id="${item.id}" aria-label="Move ${escape(item.id)} later" ${i===deck.slides.length-1?'disabled':''}>↓</button></span></li>`;
+    }).join('');
+    const form=$('slide-form');
+    $('slide-id').textContent=s.id;
+    for(const name of ['layout','eyebrow','title','body','accent','label','notes'])form.elements[name].value=s[name];
+    $('item-fields').innerHTML=s.items.map((item,i)=>`<fieldset class="item-fieldset"><legend>ITEM ${i+1}</legend><label>Label<input data-item="${i}" data-key="label" maxlength="35" value="${escape(item.label)}"></label><label>Description<input data-item="${i}" data-key="text" maxlength="80" value="${escape(item.text)}"></label>${s.layout==='data'?`<label>Score (0–100)<input type="number" min="0" max="100" step="any" data-item="${i}" data-key="value" value="${item.value}"></label>`:''}</fieldset>`).join('');
+    $('detail-fields').innerHTML=s.details.map((item,i)=>`<fieldset class="detail-fieldset"><legend>DETAIL ${i+1}</legend><label>Heading<input data-detail="${i}" data-key="title" maxlength="160" value="${escape(item.title)}"></label><label>Body<textarea data-detail="${i}" data-key="body" maxlength="8000" rows="4">${escape(item.body)}</textarea></label><button type="button" class="remove-detail" data-remove-detail="${i}">Remove this detail</button></fieldset>`).join('');
+    $('add-detail').disabled=s.details.length>=12;
+    dirty=false;document.body.classList.remove('form-dirty');updateButtons();
+  }
+  function change(next,selectedId=deck.slides[current].id) {
+    validate(next);
+    if(JSON.stringify(next)===JSON.stringify(deck))return;
+    past.push(clone(deck));if(past.length>40)past.shift();future=[];
+    deck=clone(next);current=Math.max(0,deck.slides.findIndex(s=>s.id===selectedId));
+    persist();renderDeck();renderEditor();setHash();
+  }
+  function collectForm() {
+    const next=clone(deck),s=next.slides[current],form=$('slide-form');
+    for(const name of ['layout','eyebrow','title','body','accent','label','notes'])s[name]=form.elements[name].value;
+    form.querySelectorAll('[data-item]').forEach(el=>s.items[Number(el.dataset.item)][el.dataset.key]=el.dataset.key==='value'?Number(el.value):el.value);
+    form.querySelectorAll('[data-detail]').forEach(el=>s.details[Number(el.dataset.detail)][el.dataset.key]=el.value);
+    const count=['blueprint','system'].includes(s.layout)?4:3;
+    while(s.items.length<count)s.items.push({label:'Next step',text:'Describe this stage'});
+    s.items=s.items.slice(0,count);
+    if(s.layout==='data')s.items=s.items.map((item,i)=>({...item,value:item.value??[38,76,90][i]}));
+    return next;
+  }
+  function applyForm() {
+    if(!dirty)return true;
+    try {change(collectForm());dirty=false;document.body.classList.remove('form-dirty');return true;}
+    catch(error){notify(error.message);return false;}
+  }
+  function go(index) {
+    if(!applyForm())return;
+    current=Math.max(0,Math.min(deck.slides.length-1,index));
+    if(!reading)document.querySelectorAll('#deck > .slide').forEach((el,i)=>el.hidden=i!==current);
+    if(editing)renderEditor();setHash();updateButtons();
+    $(deck.slides[current].id).scrollIntoView({behavior:'instant',block:'start'});
+    if(!reading)window.scrollTo({top:0,behavior:'instant'});
+  }
+  function setReading(value) {
+    if(!applyForm())return;
+    reading=value;document.body.classList.toggle('reading',reading);$('read-mode').setAttribute('aria-pressed',String(reading));$('read-mode').textContent=reading?'Slides':'Read';
+    renderDeck();go(current);
+  }
+  function setEditing(value) {
+    if(!applyForm())return;
+    if(value&&reading)setReading(false);
+    editing=value;document.body.classList.toggle('editing',editing);$('editor').hidden=!editing;$('edit-mode').setAttribute('aria-pressed',String(editing));
+    if(editing)renderEditor();
+  }
+  function reorder(id,targetId,after=false) {
+    if(!applyForm()||id===targetId)return;
+    const next=clone(deck),from=next.slides.findIndex(s=>s.id===id);
+    if(from<0||!next.slides.some(s=>s.id===targetId))return;
+    const [moved]=next.slides.splice(from,1),to=next.slides.findIndex(s=>s.id===targetId)+(after?1:0);
+    next.slides.splice(to,0,moved);change(next,id);notify(`Moved ${id} ${after?'after':'before'} ${targetId}.`);
+  }
+  function timeTravel(direction) {
+    if(!applyForm())return;
+    const from=direction==='undo'?past:future,to=direction==='undo'?future:past;
+    if(!from.length)return;
+    const selected=deck.slides[current].id;to.push(clone(deck));deck=from.pop();current=Math.max(0,deck.slides.findIndex(s=>s.id===selected));
+    persist();renderDeck();renderEditor();setHash();notify(direction==='undo'?'Change undone.':'Change restored.');
+  }
+  function download(content,type,name) {
+    const url=URL.createObjectURL(new Blob([content],{type})),a=document.createElement('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),10000);
+  }
+  function exportHTML() {
+    if(!applyForm())return;
+    const json=JSON.stringify(deck,null,2).replace(/</g,'\\u003c').replace(/\u2028/g,'\\u2028').replace(/\u2029/g,'\\u2029');
+    const html=sourceTemplate.replace(/(<script type="application\/json" id="deck-data">)[\s\S]*?(<\/script>)/,(_all,start,end)=>start+json+end);
+    download(html,'text/html',`${deck.id}.html`);notify('HTML download started. Open it to present or continue editing.');
+  }
+  $('layout').innerHTML=layouts.map(l=>`<option value="${l}">${designNames[l]}</option>`).join('');
+  $('slide-form').addEventListener('input',()=>{dirty=true;document.body.classList.add('form-dirty');$('save-status').textContent='Changes pending. Apply to preview and save your local draft.';});
+  $('slide-form').addEventListener('submit',event=>{event.preventDefault();if(applyForm())notify('Changes applied. Download to keep or share.');});
+  $('add-detail').onclick=()=>{if(!applyForm())return;const next=clone(deck);if(next.slides[current].details.length>=12)return;next.slides[current].details.push({title:'A little more context',body:'Add the evidence, explanation, or reference here.'});change(next);};
+  $('detail-fields').onclick=event=>{const button=event.target.closest('[data-remove-detail]');if(!button||!applyForm())return;const next=clone(deck);next.slides[current].details.splice(Number(button.dataset.removeDetail),1);change(next);};
+  $('slide-list').onclick=event=>{
+    const select=event.target.closest('[data-select]'),move=event.target.closest('[data-move]');
+    if(select)go(deck.slides.findIndex(s=>s.id===select.dataset.select));
+    if(move){const from=deck.slides.findIndex(s=>s.id===move.dataset.id),delta=Number(move.dataset.move),target=deck.slides[from+delta];if(target){reorder(move.dataset.id,target.id,delta>0);document.querySelector(`[data-move="${delta}"][data-id="${move.dataset.id}"]`)?.focus();}}
+  };
+  $('slide-list').addEventListener('dragstart',event=>{const row=event.target.closest('.slide-row');if(!row)return;dragId=row.dataset.id;event.dataTransfer.setData('text/plain',dragId);event.dataTransfer.effectAllowed='move';row.classList.add('dragging');});
+  $('slide-list').addEventListener('dragover',event=>{if(!dragId)return;const row=event.target.closest('.slide-row');if(row){event.preventDefault();event.dataTransfer.dropEffect='move';document.querySelectorAll('.drag-over').forEach(el=>el.classList.remove('drag-over'));row.classList.add('drag-over');}});
+  $('slide-list').addEventListener('drop',event=>{event.preventDefault();const row=event.target.closest('.slide-row');if(row&&dragId){const after=event.clientY>row.getBoundingClientRect().top+row.getBoundingClientRect().height/2;reorder(dragId,row.dataset.id,after);}dragId=null;document.querySelectorAll('.drag-over,.dragging').forEach(el=>el.classList.remove('drag-over','dragging'));});
+  $('slide-list').addEventListener('dragend',()=>{dragId=null;document.querySelectorAll('.drag-over,.dragging').forEach(el=>el.classList.remove('drag-over','dragging'));});
+  $('add-slide').onclick=()=>{if(!applyForm()||deck.slides.length>=80)return;const next=clone(deck),copy=clone(next.slides[current]);let count=2;const base=copy.id.slice(0,52);while(next.slides.some(s=>s.id===`${base}-copy-${count}`))count++;copy.id=`${base}-copy-${count}`;next.slides.splice(current+1,0,copy);change(next,copy.id);notify('Slide duplicated. It has a new stable ID.');};
+  $('undo').onclick=()=>timeTravel('undo');$('redo').onclick=()=>timeTravel('redo');
+  $('download-html').onclick=exportHTML;
+  $('download-json').onclick=()=>{if(applyForm()){download(JSON.stringify(deck,null,2)+'\n','application/json',`${deck.id}.json`);notify('JSON download started. This is your editable deck source.');}};
+  $('import-json').onclick=()=>{if(applyForm())$('json-file').click();};
+  $('json-file').onchange=async event=>{
+    const file=event.target.files[0];if(!file)return;
+    try{if(file.size>2_000_000)throw new Error('This file is too large. Use a JSON deck smaller than 2 MB.');const next=validate(JSON.parse(await file.text()));change(next,next.slides[0].id);go(0);notify('Deck opened. Your previous deck is available through Undo.');}
+    catch(error){notify(`Could not open this deck: ${error.message}`);}
+    finally{event.target.value='';}
+  };
+  $('read-mode').onclick=()=>setReading(!reading);$('edit-mode').onclick=()=>setEditing(!editing);$('close-editor').onclick=()=>setEditing(false);
+  $('previous').onclick=()=>go(current-1);$('next').onclick=()=>go(current+1);
+  document.querySelector('.wordmark').onclick=event=>{event.preventDefault();go(0);};
+  $('deck').onclick=event=>{const button=event.target.closest('[data-details]');if(button)$(`details-${button.dataset.details}`).scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth',block:'start'});};
+  $('motion').onclick=()=>{const paused=document.body.classList.toggle('paused');$('motion').textContent=paused?'Resume motion':'Pause motion';$('motion').setAttribute('aria-pressed',String(paused));};
+  $('fullscreen').onclick=async()=>{
+    if(!applyForm())return;
+    try{if(document.fullscreenElement)await document.exitFullscreen();else{setEditing(false);setReading(false);await document.documentElement.requestFullscreen();}}
+    catch{notify('Fullscreen is unavailable here. Use your browser’s fullscreen command.');}
+  };
+  document.addEventListener('fullscreenchange',()=>{$('fullscreen').innerHTML=document.fullscreenElement?'Exit fullscreen':'Present <span aria-hidden="true">↗</span>';});
+  $('overview-open').onclick=()=>{
+    if(!applyForm())return;
+    $('overview-grid').innerHTML=deck.slides.map((s,i)=>`<button class="overview-card ${i===current?'current':''}" data-overview="${s.id}" aria-label="Go to slide ${i+1}: ${escape(s.title.replace(/\n/g,' '))}">${canvas({...s,id:'preview-'+s.id},i,deck.slides.length)}<span>${String(i+1).padStart(2,'0')} · ${escape(s.title.split('\n')[0])}</span><small>${escape(s.id)}</small></button>`).join('');
+    $('overview').showModal();
+  };
+  $('overview-grid').onclick=event=>{const button=event.target.closest('[data-overview]');if(button){$('overview').close();go(deck.slides.findIndex(s=>s.id===button.dataset.overview));}};
+  document.querySelectorAll('[data-close]').forEach(button=>button.onclick=()=>$(button.dataset.close).close());
+  $('print-open').onclick=()=>{if(applyForm())$('print-dialog').showModal();};
+  $('print-now').onclick=()=>{document.body.classList.toggle('print-details',document.querySelector('[name="print-content"]:checked').value==='details');$('print-dialog').close();window.print();};
+  $('restore-draft').onclick=()=>{if(restoreCandidate){change(restoreCandidate);go(0);notify('Saved browser draft restored.');}$('draft-banner').hidden=true;};
+  $('dismiss-draft').onclick=()=>{$('draft-banner').hidden=true;try{localStorage.removeItem(storageKey);}catch{};};
+  document.addEventListener('keydown',event=>{
+    if(event.target.closest('input,textarea,select,[contenteditable]')||document.querySelector('dialog[open]'))return;
+    if((event.ctrlKey||event.metaKey)&&event.key.toLowerCase()==='z'&&editing){event.preventDefault();timeTravel(event.shiftKey?'redo':'undo');return;}
+    if(event.ctrlKey||event.metaKey||event.altKey)return;
+    if(event.key==='ArrowRight'||event.key==='PageDown'){event.preventDefault();go(current+1);}
+    else if(event.key==='ArrowLeft'||event.key==='PageUp'){event.preventDefault();go(current-1);}
+    else if(event.key==='Home'){event.preventDefault();go(0);}
+    else if(event.key==='End'){event.preventDefault();go(deck.slides.length-1);}
+    else if(event.key.toLowerCase()==='f')$('fullscreen').click();
+    else if(event.key.toLowerCase()==='i')$('overview-open').click();
+    else if(event.key.toLowerCase()==='s')setReading(!reading);
+    else if(event.key==='Escape'&&editing)setEditing(false);
+  });
+  window.addEventListener('hashchange',()=>{const index=deck.slides.findIndex(s=>s.id===safeHash());if(index>=0)go(index);});
+  window.addEventListener('beforeunload',event=>{if(dirty){event.preventDefault();event.returnValue='';}});
+  try{const saved=localStorage.getItem(storageKey);if(saved&&saved!==sourceString){restoreCandidate=validate(JSON.parse(saved));$('draft-banner').hidden=false;}}catch{/* Corrupt or unavailable local storage must not prevent opening the file. */}
+  current=Math.max(0,deck.slides.findIndex(s=>s.id===safeHash()));
+  renderDeck();renderEditor();setHash();
+})();
+</script>
+</body>
+</html>
